@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ivy-module version="1.0">
+
+  <info organisation="sussex university" module="${ant.project.name}">
+    <license name="jack"/>
+    <ivyauthor name="Jack Pay" url="http://www.sussex.ac.uk/profiles/229360"/>
+    <description>
+        Apache Nutch
+    </description>
+  </info>
+
+  <configurations>
+    <include file="../../../ivy/ivy-configurations.xml"/>
+  </configurations>
+
+  <publications>
+    <!--get the artifact from our module name-->
+    <artifact conf="master"/>
+  </publications>
+
+  <dependencies>
+  	    <dependency org="org.jsoup" name="jsoup" rev="1.8.3" />
+  </dependencies>
+  
+</ivy-module>

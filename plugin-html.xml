@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Information for the forum scraping plugin
+		author: Jack Pay 20/09/2015 -->
+		
+<plugin
+	   id="html-forum-parser"
+   	   name="Forum Parser"
+       version="1.0.0"
+       provider-name="jack.pay"
+      >
+      
+     <!-- Output .jar name and dependency jar names (i.e. jsoup)-->
+   <runtime>
+      <library name="forum-splitter.jar">
+         <export name="*"/>
+      </library>
+      <library name="jsoup-1.8.3.jar"/>
+   </runtime>
+   
+   <requires>
+      <import plugin="nutch-extensionpoints"/>
+   </requires>
+   
+      <!-- Plugin implementation details -->
+   <extension
+   			id="org.apache.nutch.parse.forumparser"
+            name="Forum Html Parse Filter"
+            point="org.apache.nutch.parse.HtmlParseFilter">
+            <implementation id="ForumHtmlParser"
+                      class="org.apache.nutch.parse.filter.ForumHTMLParseFilter"/>
+   </extension>
+   
+</plugin>

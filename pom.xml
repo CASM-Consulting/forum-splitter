@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>Nutch-SAWSAT</groupId>
+  <artifactId>Nutch-SAWSAT</artifactId>
+  <version>1.0</version>
+  
+  <packaging>jar</packaging>
+  
+  <name>forum-splitter</name>
+  <properties>
+	<jdk.version>1.7</jdk.version>
+  </properties>
+  
+  <build>
+  	<finalName>forum-splitter</finalName>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+    <plugin>
+  		<artifactId>maven-assembly-plugin</artifactId>
+  		<configuration>
+    		<descriptorRefs>
+      			<descriptorRef>jar-with-dependencies</descriptorRef>
+    		</descriptorRefs>
+  		</configuration>
+  		<executions>
+    		<execution>
+      			<id>make-assembly</id> <!-- this is used for inheritance merges -->
+      			<phase>package</phase> <!-- bind to the packaging phase -->
+      			<goals>
+        			<goal>single</goal>
+      			</goals>
+    		</execution>
+  		</executions>
+	</plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+	<dependency>
+    	<groupId>org.apache.nutch</groupId>
+    	<artifactId>nutch</artifactId>
+    	<version>1.10</version>
+    	<scope>compile</scope>
+    	<exclusions>
+    		<exclusion>
+    			<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf</artifactId>
+    		</exclusion>
+    	</exclusions>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.hadoop</groupId>
+		<artifactId>hadoop-core</artifactId>
+		<version>1.2.1</version>
+	</dependency>
+    <dependency>
+    	<groupId>org.apache.hadoop</groupId>
+    	<artifactId>hadoop-common</artifactId>
+    	<version>2.7.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.jsoup</groupId>
+		<artifactId>jsoup</artifactId>
+		<version>1.8.3</version>
+	</dependency>
+  </dependencies>
+</project>

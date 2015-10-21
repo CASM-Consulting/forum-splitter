@@ -1,0 +1,8 @@
+org/apache/nutch/index/filter/ForumSplitterFactory.class
+org/apache/nutch/index/filter/ForumIndexer.class
+org/apache/nutch/index/filter/ForumSplitter.class
+org/apache/nutch/index/filter/PhpBBForumSplitterFactory.class
+org/apache/nutch/parse/filter/ForumHTMLParseFilter.class
+org/apache/nutch/index/filter/PhpBBForumSplitter.class
+org/apache/nutch/index/filter/Post.class
+org/apache/nutch/splitter/utils/GlobalFieldValues.class
