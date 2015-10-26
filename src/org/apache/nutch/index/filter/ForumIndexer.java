@@ -26,12 +26,15 @@ public class ForumIndexer implements IndexingFilter {
 		
 		// Retrieve the forum post meta-data stored in the parse.
 		String[] posts = parse.getData().getParseMeta().getValues(GlobalFieldValues.POST_FIELD);
-		System.err.println("posts length: " + posts.length);
+		
+		// Return if null.
+		if(posts == null) {
+			return doc;
+		}
 		
 		// Add it to the index fields in the nutch document.
 		for (String post : posts) {
 			doc.add(GlobalFieldValues.POST_FIELD, post);
-			System.err.println("POST IS THIS: " + post);
 		}
 		
 		return doc;
