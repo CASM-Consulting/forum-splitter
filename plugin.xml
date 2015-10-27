@@ -12,7 +12,7 @@
       
      <!-- Output .jar name and dependency jar names (i.e. jsoup)-->
    <runtime>
-      <library name="forum-splitter.jar">
+      <library name="forum-splitter-deps.jar">
          <export name="*"/>
       </library>
       <library name="jsoup-1.8.3.jar"/>

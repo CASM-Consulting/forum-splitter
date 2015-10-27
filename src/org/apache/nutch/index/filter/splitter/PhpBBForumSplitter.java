@@ -1,4 +1,4 @@
-package org.apache.nutch.index.filter.splitters;
+package org.apache.nutch.index.filter.splitter;
 
 // java imports
 import java.util.Date;

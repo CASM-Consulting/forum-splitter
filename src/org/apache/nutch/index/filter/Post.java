@@ -8,6 +8,8 @@ import java.util.Date;
  */
 public class Post {
 
+	
+	// TODO: Linking structure to preserve thread - parent question + follow up posts.
 	private final Date postDate; // Date posted or indexed if not available.
 	private final CharSequence content; // Post content.
 	private int id;

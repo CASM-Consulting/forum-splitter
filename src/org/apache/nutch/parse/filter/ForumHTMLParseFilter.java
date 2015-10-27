@@ -8,7 +8,7 @@ import java.util.Set;
 // nutch/hadoop imports
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.index.filter.Post;
-import org.apache.nutch.index.filter.splitters.ForumSplitterFactory;
+import org.apache.nutch.index.filter.splitter.ForumSplitterFactory;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.HTMLMetaTags;
 import org.apache.nutch.parse.HtmlParseFilter;
@@ -56,6 +56,7 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    Metadata md = parse.getData().getParseMeta();
 
 	    // Add any forum posts to the meta-data object of the page.
+	    // TODO: Add more than just post-content as meta-data.
 	    Document jDoc = Jsoup.parse(new String(content.getContent())); // ignore DocumentFragment as DOM navigation sucks.
 	    for(ForumSplitterFactory fs : factories) {
 			for(Post post : fs.create().split(jDoc)) {
@@ -71,7 +72,7 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	 */
 	private static void registerFactories() {
 
-		Reflections reflections = new Reflections("org.apache.nutch.index.filter.splitters");
+		Reflections reflections = new Reflections("org.apache.nutch.index.filter.splitter");
 		Set<Class<? extends ForumSplitterFactory>> splitters = reflections.getSubTypesOf(ForumSplitterFactory.class);
 		for(Class<? extends ForumSplitterFactory> splitter : splitters) {
 			ForumSplitterFactory anf = null;

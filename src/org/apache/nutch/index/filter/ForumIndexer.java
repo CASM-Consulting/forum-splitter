@@ -13,7 +13,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
 /**
  * Default class for adding forum fields to the index of a NutchDocument. The
  * intention is to subsequently communicate these to the corresponding field(s)
- * in the Solr index, which are dedicated to storing these posts. Created by
+ * in the Solr index.
  * jp242 on 30/09/2015.
  */
 public class ForumIndexer implements IndexingFilter {
@@ -33,6 +33,7 @@ public class ForumIndexer implements IndexingFilter {
 		}
 		
 		// Add it to the index fields in the nutch document.
+		// TODO: // Add more than just post content to meta-data.
 		for (String post : posts) {
 			doc.add(GlobalFieldValues.POST_FIELD, post);
 		}
