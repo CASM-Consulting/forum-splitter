@@ -18,7 +18,7 @@ import org.jsoup.nodes.Element;
  * @author jp242
  *
  */
-public class PhpBBForumSplitter implements ForumSplitter {
+public class DefaultForumSplitter implements ForumSplitter {
 
 	private final String BODY_NAME;
 	private final String CONTENT;
@@ -27,7 +27,7 @@ public class PhpBBForumSplitter implements ForumSplitter {
 	 * @param bodyName The classname of the forum post body.
 	 * @param contentName The classname of the forum post content
 	 */
-	public PhpBBForumSplitter(String bodyName, String contentName) {
+	public DefaultForumSplitter(String bodyName, String contentName) {
 		this.BODY_NAME = bodyName;
 		this.CONTENT = contentName;
 	}
