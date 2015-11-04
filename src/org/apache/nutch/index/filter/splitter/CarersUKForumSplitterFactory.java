@@ -6,7 +6,7 @@ public class CarersUKForumSplitterFactory implements ForumSplitterFactory {
 	private static final String CONTENT = "phpbb_content";
 	@Override
 	public ForumSplitter create() {
-		return new PhpBBForumSplitter(BODY_NAME,CONTENT);
+		return new DefaultForumSplitter(BODY_NAME,CONTENT);
 	}
 	
 	

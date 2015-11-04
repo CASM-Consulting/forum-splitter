@@ -6,14 +6,14 @@ package org.apache.nutch.index.filter.splitter;
  * @author jp242
  *
  */
-public class DefaultPhpBBSplitterFactory implements ForumSplitterFactory {
+public class DefaultSplitterFactory implements ForumSplitterFactory {
 	
 	private static final String BODY_NAME = "postbody";
 	private static final String CONTENT = "content";
 
 	@Override
 	public ForumSplitter create() {
-		return new PhpBBForumSplitter(BODY_NAME,CONTENT);
+		return new DefaultForumSplitter(BODY_NAME,CONTENT);
 	}
 
 }

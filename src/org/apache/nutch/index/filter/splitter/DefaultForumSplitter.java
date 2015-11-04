@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 // nutch imports
+import org.apache.nutch.index.filter.BasicPost;
 import org.apache.nutch.index.filter.Post;
-
 // jsoup imports
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -18,7 +18,7 @@ import org.jsoup.nodes.Element;
  * @author jp242
  *
  */
-public class PhpBBForumSplitter implements ForumSplitter {
+public class DefaultForumSplitter implements ForumSplitter {
 
 	private final String BODY_NAME;
 	private final String CONTENT;
@@ -27,7 +27,7 @@ public class PhpBBForumSplitter implements ForumSplitter {
 	 * @param bodyName The classname of the forum post body.
 	 * @param contentName The classname of the forum post content
 	 */
-	public PhpBBForumSplitter(String bodyName, String contentName) {
+	public DefaultForumSplitter(String bodyName, String contentName) {
 		this.BODY_NAME = bodyName;
 		this.CONTENT = contentName;
 	}
@@ -43,7 +43,7 @@ public class PhpBBForumSplitter implements ForumSplitter {
 
 		// Get the elements containing the individual forum post and add them to the linked list.
 		for (Element post : posts) {
-			fThread.add(new Post(new Date(), post.getElementsByClass(CONTENT).text()));
+			fThread.add(new BasicPost(new Date(), post.getElementsByClass(CONTENT).text()));
 		}
 
 		return fThread;

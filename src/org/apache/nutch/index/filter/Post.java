@@ -2,42 +2,21 @@ package org.apache.nutch.index.filter;
 
 import java.util.Date;
 
-/**
- * Represents a post in a forum thread. Intention is for it to be stored in a
- * LinkedList representing a thread.
- */
-public class Post {
-
-	
-	// TODO: Linking structure to preserve thread - parent question + follow up posts.
-	private final Date postDate; // Date posted or indexed if not available.
-	private final CharSequence content; // Post content.
-	private int id;
-	private int parentId;
-
-	/**
-	 * Set the post or crawl date and forum post content.
-	 * @param date
-	 * @param content
-	 */
-	public Post(Date date, CharSequence content) {
-		this.postDate = date;
-		this.content = content;
-	}
-
-	/**
-	 * @return The text content of the post
-	 */
-	public String content() {
-		return content.toString();
-	}
+public interface Post {
 	
 	/**
-	 * Set the parent id of this post if it is a reply.
-	 * @param id The id of the forum post posing the question.
+	 * @return The text content of the post.
 	 */
-	public void setParentId(int id) {
-		parentId = id;
-	}
+	public String content();
+	
+	/**
+	 * @return Confirms if this is the first post of a thread.
+	 */
+	public boolean question();
+	
+	/**
+	 * @return The post-date or index-date of the post.
+	 */
+	public Date postDate();
 
 }

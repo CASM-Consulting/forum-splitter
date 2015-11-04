@@ -7,7 +7,7 @@ public class MentalHealthForumSplitterFactory implements ForumSplitterFactory {
 
 	@Override
 	public ForumSplitter create() {
-		return new PhpBBForumSplitter(BODY_NAME,CONTENT);
+		return new DefaultForumSplitter(BODY_NAME,CONTENT);
 	}
 
 }
