@@ -28,27 +28,27 @@ public class ForumIndexer implements IndexingFilter {
 		// Retrieve the forum post meta-data stored in the parse.
 		String[] posts = parse.getData().getParseMeta().getValues(GlobalFieldValues.POST_FIELD);
 		
-		// Return if null.
-		if(posts == null) {
-			return doc;
+		if(posts == null || posts.length <= 0) {
+		    // Return null if no posts were found and the config (set in nutch-site.xml) specifies to skip the document.
+		    if(Boolean.parseBoolean(conf.get("skip.no.posts", "false"))) {
+		    		return null;
+		    }
+		    else {
+		    	return doc;
+		    }
 		}
 		
-		// Add the number of forum posts contained in the page.
-		if(posts.length > 0) {
-			doc.add(GlobalFieldValues.POST_FIELD, posts.length);
-		}
+		// Add the number of posts found on this page.
+		doc.add(GlobalFieldValues.NUM_POSTS, posts.length);
 		
 		// Add the pagination value if one exists
-		String page = parse.getData().getParseMeta().get(GlobalFieldValues.PAGE);
-		if(page != null) {
-			doc.add(GlobalFieldValues.PAGE,page);
-		}
+		final String page = ( parse.getData().getParseMeta().get(GlobalFieldValues.PAGE) == null ) ? 
+				"0" : parse.getData().getParseMeta().get(GlobalFieldValues.PAGE);
+		doc.add(GlobalFieldValues.PAGE,page);
 		
 		// Add post content to the index fields.
 		for (String post : posts) {
-			if(post.trim().length() > 0) {
-				doc.add(GlobalFieldValues.POST_FIELD, post);
-			}
+			doc.add(GlobalFieldValues.POST_FIELD, post);
 		}
 		
 		return doc;

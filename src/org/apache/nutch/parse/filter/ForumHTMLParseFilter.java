@@ -76,7 +76,7 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 				postFound = true;
 			}
 			if(postFound) {
-				break factoryloop;	// Breakout as it is assumed only one type of forum was found on a single page.
+				break factoryloop;	// Breakout as it is assumed only one type of forum tech. exists in a single page.
 			}
 		}
 	    
