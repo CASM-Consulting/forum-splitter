@@ -1,5 +1,7 @@
 package org.apache.nutch.index.filter;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 // nutch import
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
@@ -9,7 +11,6 @@ import org.apache.nutch.indexer.IndexingException;
 import org.apache.nutch.indexer.IndexingFilter;
 import org.apache.nutch.indexer.NutchDocument;
 import org.apache.nutch.parse.Parse;
-
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 /**
@@ -19,6 +20,8 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  * jp242 on 30/09/2015.
  */
 public class ForumIndexer implements IndexingFilter {
+	
+    private static final Log LOG = LogFactory.getLog(ForumIndexer.class);
 
 	private Configuration conf;
 
@@ -38,13 +41,17 @@ public class ForumIndexer implements IndexingFilter {
 		    }
 		}
 		
+		// Add the base url (for search purposes).
+		doc.add(GlobalFieldValues.BASE_URL, parse.getData().getParseMeta().get(GlobalFieldValues.BASE_URL));
+		
 		// Add the number of posts found on this page.
 		doc.add(GlobalFieldValues.NUM_POSTS, posts.length);
 		
 		// Add the pagination value if one exists
-		final String page = ( parse.getData().getParseMeta().get(GlobalFieldValues.PAGE) == null ) ? 
-				"0" : parse.getData().getParseMeta().get(GlobalFieldValues.PAGE);
-		doc.add(GlobalFieldValues.PAGE,page);
+		final String page = ( parse.getData().getParseMeta().get(GlobalFieldValues.PAGE_START) == null ) ? 
+				"0" : parse.getData().getParseMeta().get(GlobalFieldValues.PAGE_START);
+		doc.add(GlobalFieldValues.PAGE_START,page);
+		doc.add(GlobalFieldValues.PAGE_END, (Integer.parseInt(page)+posts.length)-1);
 		
 		// Add post content to the index fields.
 		for (String post : posts) {

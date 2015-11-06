@@ -80,15 +80,19 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 			}
 		}
 	    
+
+	    // Pass the uri to the meta data
+	    md.add(GlobalFieldValues.BASE_URL, content.getUrl().split("\\?")[0]);
+	    
 	    // If the posts in this page are paginated get the start value.
 	    if(postFound) {
-		    final String[] urlS = content.getUrl().split("\\?", 1);
+		    final String[] urlS = content.getUrl().split("\\?", 2);
 		    if(urlS.length > 1) {
 		    	if(urlS[1].contains("start=")) {
 		    		final String page = urlS[1].split("start=")[1];
 		    		try {
-			    		final Integer start = Integer.parseInt(page.split("[^0-9]",1)[0]);
-			    		md.add(GlobalFieldValues.PAGE, start.toString());
+		    		    final Integer start = Integer.parseInt(page.split("[^0-9]",2)[0]);
+			    		md.add(GlobalFieldValues.PAGE_START, start.toString());
 		    		} catch (NumberFormatException e) {
 		    			LOG.warn("WARN: Unable to parse the pagination value");
 		    		}
