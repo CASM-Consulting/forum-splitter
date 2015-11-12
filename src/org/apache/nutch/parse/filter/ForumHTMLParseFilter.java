@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.filter;
+	package org.apache.nutch.parse.filter;
 
 // java imports
 import java.util.ArrayList;
@@ -80,9 +80,13 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 			}
 		}
 	    
-
-	    // Pass the uri to the meta data
-	    md.add(GlobalFieldValues.BASE_URL, content.getUrl().split("\\?")[0]);
+	    // Pass the url to the meta data
+	    final String baseUrl = content.getUrl().split("\\?")[0];
+	    md.add(GlobalFieldValues.BASE_URL, baseUrl);
+	    
+	    // Add the subject of the forum post 
+	    final String[] splitUrl = baseUrl.split("/");
+	    md.add(GlobalFieldValues.SUBJECT, splitUrl[splitUrl.length-1]);
 	    
 	    // If the posts in this page are paginated get the start value.
 	    if(postFound) {

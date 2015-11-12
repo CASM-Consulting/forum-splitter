@@ -1,7 +1,9 @@
 package org.apache.nutch.index.filter;
 
+// logging import
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 // nutch import
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
@@ -11,6 +13,7 @@ import org.apache.nutch.indexer.IndexingException;
 import org.apache.nutch.indexer.IndexingFilter;
 import org.apache.nutch.indexer.NutchDocument;
 import org.apache.nutch.parse.Parse;
+
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 /**
