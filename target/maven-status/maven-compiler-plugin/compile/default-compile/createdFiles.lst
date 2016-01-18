@@ -1,4 +1,5 @@
 org/apache/nutch/splitter/utils/GlobalFieldValues.class
 org/apache/nutch/index/filter/ForumIndexer.class
+org/apache/nutch/index/filter/splitter/SaneSplitterFactory.class
 org/apache/nutch/parse/filter/ForumHTMLParseFilter.class
 org/apache/nutch/index/filter/Post.class

@@ -1,13 +1,12 @@
-/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/DefaultSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/ForumIndexer.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/ForumSplitter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/NetDoctorSplitterFactory.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/SaneSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/BasicPost.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/ForumHTMLParseFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/Post.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/DefaultForumSplitter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/PatientInfoSplitterFactory.java
-/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/NetDoctorSplitter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/GlobalFieldValues.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/MentalHealthForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/filter/splitter/CarersUKForumSplitterFactory.java

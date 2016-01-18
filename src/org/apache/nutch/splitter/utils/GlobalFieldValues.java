@@ -1,7 +1,7 @@
 package org.apache.nutch.splitter.utils;
 
 /**
- * Global values shared between communicating classes.
+ * Global values shared between communicating classes, Nutch and Solr.
  * @author jp242
  *
  */
