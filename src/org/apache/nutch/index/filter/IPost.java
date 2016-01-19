@@ -1,8 +1,9 @@
 package org.apache.nutch.index.filter;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public interface Post {
+public interface IPost extends Serializable {
 	
 	/**
 	 * @return The text content of the post.

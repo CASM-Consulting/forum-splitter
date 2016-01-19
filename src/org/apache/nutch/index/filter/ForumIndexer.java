@@ -1,8 +1,8 @@
 package org.apache.nutch.index.filter;
 
-// logging import
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+// java import
+import java.util.Arrays;
+import java.util.Set;
 
 // nutch import
 import org.apache.hadoop.conf.Configuration;
@@ -16,32 +16,31 @@ import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.Parse;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.Registry;
+import org.jsoup.Jsoup;
 
 /**
  * Default class for adding forum fields to the index of a NutchDocument. The
  * intention is to subsequently communicate these to the corresponding field(s)
  * in the Solr index.
- * jp242 on 30/09/2015.
+ * @author jp242
  */
 public class ForumIndexer implements IndexingFilter {
-	
-	// TODO: // Modularise each meta-data addition.
-	
-    private static final Log LOG = LogFactory.getLog(ForumIndexer.class);
 
-	private Configuration conf;
+	private Configuration conf; // Boilerplate config object
 
 	@Override
 	public NutchDocument filter(NutchDocument doc, Parse parse, Text text, CrawlDatum crawlDatum, Inlinks inlinks) throws IndexingException {
 		
+		// Get the previously collated meta-data
 		final Metadata data = parse.getData().getParseMeta();
 		
 		// Retrieve the forum post meta-data stored in the parse.
 		String[] posts = data.getValues(GlobalFieldValues.POST_FIELD);
 		
 		if(posts == null || posts.length <= 0) {
-		    // Return null if no posts were found and the config (set in nutch-site.xml) specifies to skip the document.
-		    if(Boolean.parseBoolean(conf.get("skip.no.posts", "false"))) {
+		    // Return null if no posts were found and the configuration (set in nutch-site.xml) specifies to skip the document.
+		    if(Registry.skipPosts(conf)) {
 		    		return null;
 		    }
 		    else {
@@ -49,31 +48,21 @@ public class ForumIndexer implements IndexingFilter {
 		    }
 		}
 		
-		// Add the base url (for search purposes).
-		doc.add(GlobalFieldValues.BASE_URL, data.get(GlobalFieldValues.BASE_URL));
+		// Add basic post information to the index fields.
+		// Done outside of @IFilter pass to ensure content is available.
+		Arrays.stream(posts)
+			.parallel()
+			.forEach(post -> doc.add(GlobalFieldValues.POST_FIELD, Jsoup.parse(post).text()));
 		
-		// Add the subject 
-		doc.add(GlobalFieldValues.SUBJECT, data.get(GlobalFieldValues.SUBJECT));
-		
-		// Add the number of posts found on this page.
 		doc.add(GlobalFieldValues.NUM_POSTS, posts.length);
 		
-		// Add the pagination value if one exists
-		final String page = ( data.get(GlobalFieldValues.PAGE_START) == null || Integer.parseInt(data.get(GlobalFieldValues.PAGE_START)) <= 0) ? 
-				"0" : data.get(GlobalFieldValues.PAGE_START);
-		doc.add(GlobalFieldValues.PAGE_START,page);
-		doc.add(GlobalFieldValues.PAGE_END, (Integer.parseInt(page)+posts.length)-1);
 		
-		// Add post content to the index fields.
-		for (String post : posts) {
-			doc.add(GlobalFieldValues.POST_FIELD, post);
-		}
-		
-		// Add the first post as the potential question being asked
-		// Must have be a field of less than 32766 bytes in length as this is the ( hard-coded ) maximum length for a ( un- )analyzed Lucene index field.
-	    if(Integer.parseInt(page) == 0 && posts[0].getBytes().length < 32766) {
-	    	doc.add(GlobalFieldValues.QUESTION, posts[0]);
-	    }
+	    // Pass all filter meta-data to the index document.
+	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
+	    Registry.filters().parallelStream()
+	    	.filter(filter -> requestedFilters.contains(filter.name()))
+	    	.forEach(filter -> doc.add(filter.name(), 
+	    			(data.isMultiValued(filter.name())) ? data.getValues(filter.name()) : data.get(filter.name())));
 		
 		return doc;
 	}

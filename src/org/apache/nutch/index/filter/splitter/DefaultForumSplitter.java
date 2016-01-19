@@ -4,21 +4,21 @@ package org.apache.nutch.index.filter.splitter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 // nutch imports
-import org.apache.nutch.index.filter.BasicPost;
-import org.apache.nutch.index.filter.Post;
+import org.apache.nutch.index.filter.DefaultPost;
+import org.apache.nutch.index.filter.IPost;
 // jsoup imports
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 /**
  * Splits a jsoup document according to the phpBB forum convention.
- * 
  * @author jp242
  *
  */
-public class DefaultForumSplitter implements ForumSplitter {
+public class DefaultForumSplitter implements IForumSplitter {
 
 	private final String BODY_NAME;
 	private final String CONTENT;
@@ -34,17 +34,17 @@ public class DefaultForumSplitter implements ForumSplitter {
 
 
 	@Override
-	public LinkedList<Post> split(Document doc) {
+	public LinkedList<IPost> split(Document doc) {
 		
-		LinkedList<Post> fThread = new LinkedList<Post>();
+		LinkedList<IPost> fThread = new LinkedList<IPost>();
 
 		// Retrieve the full post body
 		List<Element> posts = doc.getElementsByClass(BODY_NAME);
 
-		// Get the elements containing the individual forum post and add them to the linked list.
-		for (Element post : posts) {
-			fThread.add(new BasicPost(new Date(), post.getElementsByClass(CONTENT).text()));
-		}
+		// Get the elements containing the individual forum post and the full html to the linked list.
+		fThread.addAll(posts.stream()
+				.map(post -> new DefaultPost(new Date(), post.getElementsByClass(CONTENT).html()))
+				.collect(Collectors.toList()));
 
 		return fThread;
 	}

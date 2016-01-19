@@ -4,8 +4,8 @@ package org.apache.nutch.index.filter.splitter;
  * Used to instantiate 
  * Created by jp242 on 07/10/2015.
  */
-public interface ForumSplitterFactory {
+public interface IForumSplitterFactory {
 
-	public ForumSplitter create();
+	public IForumSplitter create();
 
 }

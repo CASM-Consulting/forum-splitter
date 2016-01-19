@@ -1,12 +1,12 @@
 package org.apache.nutch.index.filter.splitter;
 
-public class NetDoctorSplitterFactory implements ForumSplitterFactory {
+public class NetDoctorSplitterFactory implements IForumSplitterFactory {
 	
 	private static final String CONTENT = "Item-BodyWrap";
 	private static final String BODY = "Message";
 
 	@Override
-	public ForumSplitter create() {
+	public IForumSplitter create() {
 		return new DefaultForumSplitter(CONTENT,BODY);
 	}
 

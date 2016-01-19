@@ -6,7 +6,9 @@ import java.util.Date;
  * Represents a post in a forum thread. Intention is for it to be stored in a
  * LinkedList representing a thread.
  */
-public class BasicPost implements Post {
+public class DefaultPost implements IPost {
+	
+	private static final long serialVersionUID = 1442372085805974485L;
 	
 	private final Date postDate; 		// Date posted or indexed if not available.
 	private final CharSequence content; // Post content.
@@ -17,7 +19,7 @@ public class BasicPost implements Post {
 	 * @param date
 	 * @param content
 	 */
-	public BasicPost(Date date, CharSequence content) {
+	public DefaultPost(Date date, CharSequence content) {
 		this.postDate = date;
 		this.content = content;
 		this.question = false;
@@ -29,7 +31,7 @@ public class BasicPost implements Post {
 	 * @param content Post content	
 	 * @param question Thread question/first post.
 	 */
-	public BasicPost(Date date, CharSequence content, boolean question) {
+	public DefaultPost(Date date, CharSequence content, boolean question) {
 		this.postDate = date;
 		this.content = content;
 		this.question = question;
