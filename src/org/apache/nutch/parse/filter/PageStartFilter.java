@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
 
 /**
  * Retrieves the pagination value. Defaults to 0 if none found.

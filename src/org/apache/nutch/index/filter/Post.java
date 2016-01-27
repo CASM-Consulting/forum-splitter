@@ -11,7 +11,7 @@ public class Post extends HashMap<String,String> {
 	private static final long serialVersionUID = 1442372085805974485L;
 	
 	private String POST;		// The entire post html
-	private String CONTENT; 	// The post content (html exptected)
+	private String CONTENT; 	// The post content (html expected)
 	
 	/**
 	 * Empty constructor for @Gson "serialization"

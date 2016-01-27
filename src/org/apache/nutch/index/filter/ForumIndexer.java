@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 // nutch import
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.Text;
@@ -16,12 +18,13 @@ import org.apache.nutch.indexer.IndexingFilter;
 import org.apache.nutch.indexer.NutchDocument;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.Parse;
-import org.apache.nutch.parse.filter.IPageFilter;
+import org.apache.nutch.parse.filter.IFilter;
 
 // gson imports
 import com.google.gson.Gson;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
 import org.apache.nutch.splitter.utils.Registry;
 import org.apache.solr.common.SolrInputDocument;
 
@@ -33,7 +36,16 @@ import org.apache.solr.common.SolrInputDocument;
  */
 public class ForumIndexer implements IndexingFilter {
 
+    private static final Log LOG = LogFactory.getLog(ForumIndexer.class);
+
 	private Configuration conf; // Boilerplate config object
+	
+	private static  List<IFilter> filters;					// Filters to parse the page content
+	
+	public ForumIndexer() {
+		// Instantiate the filters
+		filters = Registry.registerFilters();
+	}
 
 	@Override
 	public NutchDocument filter(NutchDocument doc, Parse parse, Text text, CrawlDatum crawlDatum, Inlinks inlinks) throws IndexingException {

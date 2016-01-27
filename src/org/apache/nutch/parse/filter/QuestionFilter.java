@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
 
 /**
  * If the web page is the beginning of a thread as the first post as the assumed question being asked of the thread.

@@ -14,6 +14,8 @@ import org.apache.nutch.parse.Parse;
 import org.apache.nutch.parse.ParseResult;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
+import org.apache.nutch.splitter.utils.IPostFilter;
 import org.apache.nutch.splitter.utils.Registry;
 
 // html imports
@@ -25,8 +27,8 @@ import org.w3c.dom.DocumentFragment;
 import com.google.gson.Gson;
 
 import org.apache.nutch.index.filter.Post;
-import org.apache.nutch.index.filter.split.IForumSplitter;
-import org.apache.nutch.index.filter.split.IForumSplitterFactory;
+import org.apache.nutch.index.filter.splitter.IForumSplitter;
+import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
 
 /**
  * Used as a first point of contact to parse html for forum posts. Retrieves all
@@ -34,8 +36,26 @@ import org.apache.nutch.index.filter.split.IForumSplitterFactory;
  * @author jp242
  */
 public class ForumHTMLParseFilter implements HtmlParseFilter {
+	
+	{
+		// Instantiate the filters
+		Registry.registerFilters();
+		// Instantiate the forum splitter factories.
+		Registry.registerFactories();
+	}
 		
 	private Configuration conf; 					 			// Boilerplate configuration field.
+	
+	private static  List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
+	private static  List<IFilter> filters;					// Filters to parse the page content
+	
+
+	public ForumHTMLParseFilter() {
+		// Instantiate the filters
+		filters = Registry.registerFilters();
+		// Instantiate the forum splitter factories.
+		factories = Registry.registerFactories();
+	}
 
 	/**
 	 * Adds forum meta-data to the parsed document structure.

@@ -3,6 +3,7 @@ package org.apache.nutch.parse.filter;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
 
 /**
  * Retrieves the subject of the forum post - taken as the n-1 fragment of the base url

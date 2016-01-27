@@ -11,7 +11,7 @@ import java.util.HashSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.nutch.index.filter.split.IForumSplitterFactory;
+import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
 import org.apache.nutch.parse.filter.IFilter;
 
 // Reflections imports
@@ -22,16 +22,9 @@ import org.reflections.Reflections;
  * @author jp242
  */
 public final class Registry {
-	
-	static {
-		// Instantiate the forum splitter factories.
-		factories = Registry.registerFactories();
-		// Instantiate the filters
-		filters = Registry.registerFilters();
-	}
 
-	private static final List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
-	private static final List<IFilter> filters;					// Filters to parse the page content
+	private static List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
+	private static List<IFilter> filters;					// Filters to parse the page content
 	
     private static final Log LOG = LogFactory.getLog(Registry.class);
     
@@ -49,6 +42,7 @@ public final class Registry {
     //Defines the configuration parameter used to specify whether to skip indexing documents which do not contain forum posts
     private static final String NO_POSTS = "skip.no.posts";
     
+    
     public static List<IFilter> filters() {
     	return filters;
     }
@@ -60,15 +54,17 @@ public final class Registry {
     /**
      * @return A List of filters to use when extracting meta-data from web pages.
      */
-	private static List<IFilter> registerFilters() {
-		return instantiate(FILTER_PACKAGE,FILTER_CLASS);
+	public static List<IFilter> registerFilters() {
+		filters =  instantiate(FILTER_PACKAGE,FILTER_CLASS);
+		return filters;
 	}
 	
 	/**
 	 * @return A list of splitters used to identify and split forum posts on a web-page
 	 */
-	private static List<IForumSplitterFactory> registerFactories() {
-		return instantiate(FACTORY_PACKAGE,FACTORY_CLASS);
+	public static List<IForumSplitterFactory> registerFactories() {
+		factories = instantiate(FACTORY_PACKAGE,FACTORY_CLASS);
+		return factories;
 	}
 	
 	/**
@@ -97,6 +93,7 @@ public final class Registry {
 	 * @return Set of all requested filters in the Nutch configuration
 	 */
 	public static Set<String> configuredFilters(Configuration conf) {
+		// TODO: allow all filters with null field value
 		return new HashSet<String>(Arrays.asList(conf.get(VARIABLE).split(DELIM)));
 	}
 	

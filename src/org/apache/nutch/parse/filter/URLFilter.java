@@ -5,6 +5,7 @@ import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.protocol.Content;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.IPageFilter;
 
 /**
  * Retrieves the base URI - removing any queries.

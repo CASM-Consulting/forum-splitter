@@ -27,5 +27,6 @@ public class GlobalFieldValues {
 	public static final String BASE_URL = "baseurl"; 	// The field name used to index the base url of a page.
 	public static final String SUBJECT = "subject";		// The field name used to index the subject of the forum thread.
 	public static final String QUESTION = "question";	// The field name used to index the question being asked in the forum.
+	public static final String LINKS = "links";
 	
 }
