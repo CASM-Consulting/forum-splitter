@@ -1,4 +1,4 @@
-package org.apache.nutch.index.filter.splitter;
+package org.apache.nutch.index.filter.split;
 
 /**
  * Used to instantiate 

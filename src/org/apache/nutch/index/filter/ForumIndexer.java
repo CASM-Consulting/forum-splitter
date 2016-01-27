@@ -2,7 +2,9 @@ package org.apache.nutch.index.filter;
 
 // java import
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 // nutch import
 import org.apache.hadoop.conf.Configuration;
@@ -14,10 +16,14 @@ import org.apache.nutch.indexer.IndexingFilter;
 import org.apache.nutch.indexer.NutchDocument;
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.Parse;
+import org.apache.nutch.parse.filter.IPageFilter;
+
+// gson imports
+import com.google.gson.Gson;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 import org.apache.nutch.splitter.utils.Registry;
-import org.jsoup.Jsoup;
+import org.apache.solr.common.SolrInputDocument;
 
 /**
  * Default class for adding forum fields to the index of a NutchDocument. The
@@ -34,33 +40,43 @@ public class ForumIndexer implements IndexingFilter {
 		
 		// Get the previously collated meta-data
 		final Metadata data = parse.getData().getParseMeta();
-		
+				
 		// Retrieve the forum post meta-data stored in the parse.
-		String[] posts = data.getValues(GlobalFieldValues.POST_FIELD);
+		String[] json = data.getValues(GlobalFieldValues.POST_FIELD);
 		
-		if(posts == null || posts.length <= 0) {
+		if(json == null || json.length <= 0) {
 		    // Return null if no posts were found and the configuration (set in nutch-site.xml) specifies to skip the document.
-		    if(Registry.skipPosts(conf)) {
-		    		return null;
-		    }
-		    else {
-		    	return doc;
-		    }
+			return (Registry.skipPosts(conf)) ? null : doc;
 		}
 		
-		// Add basic post information to the index fields.
-		// Done outside of @IFilter pass to ensure content is available.
-		Arrays.stream(posts)
-			.parallel()
-			.forEach(post -> doc.add(GlobalFieldValues.POST_FIELD, Jsoup.parse(post).text()));
+		// "deserialize" from json string to Post objects
+		final Gson gson = new Gson();
+		List<Post> posts = Arrays.stream(json)
+				.parallel()
+				.map(string -> gson.fromJson(string, Post.class))
+				.collect(Collectors.toList());
 		
-		doc.add(GlobalFieldValues.NUM_POSTS, posts.length);
+//		// Add basic post information to the index fields.
+//		// Done outside of @IFilter pass to ensure content is available.
+//		posts.parallelStream()
+//			.forEach(post -> doc.add(GlobalFieldValues.POST_FIELD, post.text()));
 		
+		// Add the posts as sub-documents to the parent (eventual SolrInputDocument) document.
+		for(Post post : posts) {
+			final SolrInputDocument subDoc = new SolrInputDocument();
+			subDoc.addField(GlobalFieldValues.POST_TEXT, post.content());
+			post.keySet().forEach(field -> subDoc.addField(field, post.get(field)));
+			doc.add(GlobalFieldValues.POST_FIELD, subDoc);
+		}
 		
-	    // Pass all filter meta-data to the index document.
+		// Add the number of posts that were found to the meta-data.
+		doc.add(GlobalFieldValues.NUM_POSTS, posts.size());
+		
+	    // Pass all page meta-data to the index document.
 	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
 	    Registry.filters().parallelStream()
 	    	.filter(filter -> requestedFilters.contains(filter.name()))
+	    	.filter(filter -> filter instanceof IPageFilter)
 	    	.forEach(filter -> doc.add(filter.name(), 
 	    			(data.isMultiValued(filter.name())) ? data.getValues(filter.name()) : data.get(filter.name())));
 		

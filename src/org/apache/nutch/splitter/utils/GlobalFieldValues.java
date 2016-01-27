@@ -7,8 +7,21 @@ package org.apache.nutch.splitter.utils;
  */
 public class GlobalFieldValues {
 	
-	public static final String POST_FIELD = "posts";	// The field name used to index the forum-post meta-data.
+	//Post splitting fields
+	public static final String POST_FIELD = "post";	// The field name used to index the forum-post meta-data.
+	public static final String POST_TEXT = "posttext";
 	public static final String NUM_POSTS = "numposts";	// The field name used to index the number of forum posts stored in a page.
+	
+	// Post tag fields
+	public static final String MEMBER = "member";
+	public static final String MEMBER_POSTS = "memberposts";	
+	public static final String MEM_SINCE = "membsince";
+	public static final String TITLE = "title";
+	public static final String LOCATION = "location";
+	public static final String THANKS = "thanks";
+	
+	
+	// Filter fields
 	public static final String PAGE_START = "pagestart";// The field name used to index the pagination start point.
 	public static final String PAGE_END = "pageend";	// The field name used to index the pagination end point.
 	public static final String BASE_URL = "baseurl"; 	// The field name used to index the base url of a page.

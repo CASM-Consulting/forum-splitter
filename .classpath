@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry including="**/*.java" kind="src" path="src"/>
+	<classpathentry kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar" sourcepath="M2_REPO/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2.jar" sourcepath="M2_REPO/javax/annotation/javax.annotation-api/1.2/javax.annotation-api-1.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2.jar" sourcepath="M2_REPO/javax/xml/bind/jaxb-api/2.2.2/jaxb-api-2.2.2-sources.jar"/>
@@ -8,7 +13,11 @@
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1/activation-1.1.jar" sourcepath="M2_REPO/javax/activation/activation/1.1/activation-1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar" sourcepath="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-sources.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 8 [1.8.0_20]"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/org/apache/nutch/nutch/1.10/nutch-1.10.jar" sourcepath="M2_REPO/org/apache/nutch/nutch/1.10/nutch-1.10-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/tika/tika-core/1.8/tika-core-1.8.jar" sourcepath="M2_REPO/org/apache/tika/tika-core/1.8/tika-core-1.8-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/ibm/icu/icu4j/55.1/icu4j-55.1.jar" sourcepath="M2_REPO/com/ibm/icu/icu4j/55.1/icu4j-55.1-sources.jar"/>
@@ -141,5 +150,10 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/curator/curator-recipes/2.7.1/curator-recipes-2.7.1.jar" sourcepath="M2_REPO/org/apache/curator/curator-recipes/2.7.1/curator-recipes-2.7.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/htrace/htrace-core/3.1.0-incubating/htrace-core-3.1.0-incubating.jar" sourcepath="M2_REPO/org/apache/htrace/htrace-core/3.1.0-incubating/htrace-core-3.1.0-incubating-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/jsoup/jsoup/1.8.3/jsoup-1.8.3.jar" sourcepath="M2_REPO/org/jsoup/jsoup/1.8.3/jsoup-1.8.3-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -3,6 +3,7 @@ package org.apache.nutch.parse.filter;
 // java imports
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
 
 // nutch/hadoop imports
 import org.apache.hadoop.conf.Configuration;
@@ -20,8 +21,12 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.w3c.dom.DocumentFragment;
 
-import org.apache.nutch.index.filter.IPost;
-import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
+// Gson imports
+import com.google.gson.Gson;
+
+import org.apache.nutch.index.filter.Post;
+import org.apache.nutch.index.filter.split.IForumSplitter;
+import org.apache.nutch.index.filter.split.IForumSplitterFactory;
 
 /**
  * Used as a first point of contact to parse html for forum posts. Retrieves all
@@ -47,20 +52,19 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    // Used to determine if further parsing is required.
 	    boolean postFound = false;	
 
-	    // Add any forum posts to the meta-data object of the page.
-	    // ignores DocumentFragment (doc) as standard java DOM navigation sucks.
+	    // Parse to jsoup Document for further parsing -  ignores DocumentFragment (doc) as standard java DOM navigation sucks.
 	    Document jDoc = Jsoup.parse(new String(content.getContent())); 
-	    
+	    	    
 	    // Done outside of filter phase to ensure content is available to subsequent filters.
+    	List<Post> posts = new ArrayList<Post>();
 	    factoryloop:
-	    for(IForumSplitterFactory fs : Registry.factories()) {
-	    	final List<IPost> posts = fs.create().split(jDoc);
+	    for(IForumSplitterFactory fact : Registry.factories()) {
+	    	final IForumSplitter fs = fact.create();
+	    	posts = fs.split(jDoc);
+	    	
 			// Add the meta-data to the specified field name.
 	    	postFound = (posts != null && posts.size() > 0) ? true : false;
-	    	if(postFound) {
-		    	posts.parallelStream()
-	    		.forEach(post -> md.add(GlobalFieldValues.POST_FIELD, post.content()));	// Add posts
-		    	md.add(GlobalFieldValues.NUM_POSTS, String.valueOf(posts.size()));		// Add the number of posts found
+	    	if(postFound) {		
 		    	// Breakout as it is assumed only one type of forum tech. exists in a single page.
 				break factoryloop;	
 	    	}
@@ -70,10 +74,26 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    if(!postFound) {
 	    	return parseResult;
 	    }
-	    
-	    // Pass the content through each of the configured forum filters.
+	    	    
+	    // Retrieve the configured set of forum filters
 	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
+	    
+	    // Pass the post through each of the configured post forum filters.
+	    posts.parallelStream()
+	    	.forEach(post -> Registry.filters().parallelStream()
+	    				.filter(filter -> filter instanceof IPostFilter)
+	    				.filter(filter -> requestedFilters.contains(filter.name()))
+	    				.forEach(filter -> filter.parseContent(post, md)));
+	    
+	    // "serialize" the posts to json string and pass to the meta-data
+	    final Gson gson = new Gson();
+	    posts.parallelStream()
+	    	.map(post -> gson.toJson(post))
+	    	.forEach(string -> md.add(GlobalFieldValues.POST_FIELD , string));
+	    
+	    // Pass the content through each of the configured page filters.
 	    Registry.filters().parallelStream()
+	    	.filter(filter -> filter instanceof IPageFilter)
 	    	.filter(filter -> requestedFilters.contains(filter.name()))
 	    	.forEach(filter -> filter.parseContent(content,md));
 	    

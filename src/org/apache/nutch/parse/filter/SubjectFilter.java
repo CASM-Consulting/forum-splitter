@@ -8,7 +8,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  * Retrieves the subject of the forum post - taken as the n-1 fragment of the base url
  * @author jp242
  */
-public class SubjectFilter implements IFilter{
+public class SubjectFilter implements IPageFilter {
 	
 	@Override
 	public void parseContent(Content content, Metadata metaData) {

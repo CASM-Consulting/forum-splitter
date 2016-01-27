@@ -10,7 +10,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  * Retrieves the base URI - removing any queries.
  * @author jp242
  */
-public class URLFilter implements IFilter {
+public class URLFilter implements IPageFilter {
 	
 	@Override
 	public void parseContent(Content content, Metadata metaData) {

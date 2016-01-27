@@ -11,8 +11,7 @@ import java.util.HashSet;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-// Nutch imports
-import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
+import org.apache.nutch.index.filter.split.IForumSplitterFactory;
 import org.apache.nutch.parse.filter.IFilter;
 
 // Reflections imports
@@ -49,7 +48,6 @@ public final class Registry {
     
     //Defines the configuration parameter used to specify whether to skip indexing documents which do not contain forum posts
     private static final String NO_POSTS = "skip.no.posts";
-    
     
     public static List<IFilter> filters() {
     	return filters;

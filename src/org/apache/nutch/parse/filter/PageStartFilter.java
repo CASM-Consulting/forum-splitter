@@ -11,7 +11,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  * @author jp242
  *
  */
-public class PageStartFilter implements IFilter {
+public class PageStartFilter implements IPageFilter {
 	
     private static final Log LOG = LogFactory.getLog(ForumHTMLParseFilter.class);
     

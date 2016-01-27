@@ -12,7 +12,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  * @author jp242
  *
  */
-public class QuestionFilter implements IFilter {
+public class QuestionFilter implements IPageFilter {
 
     private static final Log LOG = LogFactory.getLog(ForumHTMLParseFilter.class);
 	

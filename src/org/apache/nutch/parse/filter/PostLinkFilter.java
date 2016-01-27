@@ -20,7 +20,7 @@ import org.jsoup.nodes.Element;
  * Adds as meta-data, any web links found in forums posts.
  * @author jp242
  */
-public class PostLinkFilter implements IFilter {
+public class PostLinkFilter implements IPageFilter {
 	
 	public static final String NAME = "post-link";
 	public static final String[] LINK_PREFIXES = {"www","http","https"};
@@ -38,7 +38,7 @@ public class PostLinkFilter implements IFilter {
 	
 	/**
 	 * @param post
-	 * @return a list of all (if any) web links within a single post
+	 * @return List of all (if any) web links within a single post
 	 */
 	private List<String> findLinks(String post) {
 		// Look for link tags in post first
