@@ -3,14 +3,18 @@ package org.apache.nutch.parse.forum.splitter;
 // java imports
 import java.util.LinkedList;
 
+//nutch imports
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 // jsoup imports
-//import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 	
+	// html class tag names for forum post
 	private static final String BODY_NAME = "phpbb_postbody";
 	private static final String CONTENT = "phpbb_content";
 	
@@ -21,7 +25,8 @@ public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 	
 	public class CarersUKForumSplitter extends AbstractForumSplitter {
 		
-		private final String MEMBER = "phpbb_postprofile";
+		// html class name containing the user name
+		private final String MEMBER = "phpbb_author";
 
 		public CarersUKForumSplitter(String bodyName, String contentName) {
 			super(bodyName, contentName);
@@ -29,22 +34,16 @@ public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 
 		@Override
 		public void mapFields(LinkedList<Post> posts) {
-//			for(Post post : posts) {
+			for(Post post : posts) {
 				
-//				Document doc = Jsoup.parse(post.postHTML());
-								
-//				for(Element el : doc.getElementsByClass(MEMBER)){
-//					post.put(GlobalFieldValues.MEMBER, el.text());
-//				}
-								
-//				String text = el.text();
-//				// member location
-//				String location = text.split("Location:")[1].trim();
-//				post.put(GlobalFieldValues.LOCATION, location);
-//				//member since
-//				String memb_since = text.split("Joined:")[1].split("Location:")[0].trim();
-//				post.put(GlobalFieldValues.MEM_SINCE, memb_since);
-//			}
+				Document doc = Jsoup.parse(post.postHTML());
+				
+				// Add the forum member who wrote this post
+				for(Element el : doc.getElementsByClass(MEMBER)){
+					post.put(GlobalFieldValues.MEMBER, el.text().split(" ")[1]);
+				}
+				
+			}
 		}
 		
 	}

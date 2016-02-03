@@ -1,7 +1,9 @@
 package org.apache.nutch.parse.filter;
 
+import java.util.ArrayList;
 // java imports
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
@@ -15,7 +17,7 @@ import com.google.gson.JsonElement;
  */
 public final class Post {
 	
-	private HashMap<String,String> fields;
+	private HashMap<String,List<String>> fields;
 	private String POSTHTML;
 	
 	/**
@@ -30,8 +32,20 @@ public final class Post {
 	 */
 	public Post(String postHTML, String content) {
 		this.POSTHTML = postHTML;
-		fields = new HashMap<String,String>();
-		this.fields.put(GlobalFieldValues.CONTENT,content);
+		fields = new HashMap<String,List<String>>();
+		ArrayList<String> con = new ArrayList<String>();
+		con.add(content);
+		this.fields.put(GlobalFieldValues.CONTENT,con);
+	}
+	
+	public void put(String key, String value) {
+		if(fields.get(key) == null) {
+			fields.put(key, new ArrayList<String>());
+			fields.get(key).add(value);
+		}
+		else {
+			fields.get(key).add(value);
+		}
 	}
 	
 	/**
@@ -45,7 +59,7 @@ public final class Post {
 	 * @return The html content of the post body.
 	 */
 	public String content() {
-		return this.fields.get(GlobalFieldValues.CONTENT);
+		return this.fields.get(GlobalFieldValues.CONTENT).get(0);
 	}
 	
 	/**
@@ -57,12 +71,27 @@ public final class Post {
 		return gson.toJson(tree);
 	}
 	
-	public Map<String,String> fields() {
+	public Map<String,List<String>> fields() {
 		return fields;
 	}
 	
 	public String toString() {
 		return this.toJson();
+	}
+	
+	public static void main(String[] args) {
+		
+		Post p = new Post("FISH","WEASEL");
+		p.put("WIGGLE", "CHICKEN");
+		p.put("WIGGLE", "RABBIT");
+		p.put("MOUSE", "CAT");
+		
+		String json = p.toJson();
+		
+		Gson gson = new Gson();
+		Post po = gson.fromJson(json, Post.class);
+		
+		System.out.println(po.toString());
 	}
 	
 }

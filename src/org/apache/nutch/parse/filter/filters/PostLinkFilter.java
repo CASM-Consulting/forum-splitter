@@ -36,7 +36,7 @@ public class PostLinkFilter implements IPostFilter {
 	 * @param post
 	 * @return List of all (if any) web links within a single post
 	 */
-	private String findLinks(String post) {
+	private List<String> findLinks(String post) {
 		
 		// Look for link tags in post 
 		List<String> links = new ArrayList<String>();
@@ -50,7 +50,7 @@ public class PostLinkFilter implements IPostFilter {
 		// TODO: extend @Post fields to be multiValued
 		final StringBuilder sb = new StringBuilder();
 		links.forEach(str -> sb.append(str).append(" "));
-		return sb.toString();
+		return links;
 	}
 
 	@Override
