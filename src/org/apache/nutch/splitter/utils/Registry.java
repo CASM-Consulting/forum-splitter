@@ -4,16 +4,15 @@ package org.apache.nutch.splitter.utils;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 
 // logging imports
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
-import org.apache.nutch.parse.filter.IFilter;
-
+import org.apache.nutch.parse.filter.filters.IFilter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
+import org.eclipse.jdt.core.dom.Modifier;
 // Reflections imports
 import org.reflections.Reflections;
 
@@ -24,37 +23,43 @@ import org.reflections.Reflections;
 public final class Registry {
 
 	private static List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
-	private static List<IFilter> filters;					// Filters to parse the page content
+	private static List<? extends IFilter> filters;					// Filters to parse the page content
 	
     private static final Log LOG = LogFactory.getLog(Registry.class);
     
     // Package and class variables for reflection based instantiation.
-    private static final String FACTORY_PACKAGE = "org.apache.nutch.index.filter.splitter";
+    private static final String FACTORY_PACKAGE = "org.apache.nutch.parse.forum.splitter";
     private static final Class<IForumSplitterFactory> FACTORY_CLASS = IForumSplitterFactory.class;
     
-    private static final String FILTER_PACKAGE = "org.apache.nutch.parse.filter";
-    private static final Class<IFilter> FILTER_CLASS = IFilter.class;
+    private static final String FILTER_PACKAGE = "org.apache.nutch.parse.filter.filters";
+    private static final Class<? extends IFilter> FILTER_CLASS = IFilter.class;
     
     // Defines the delimiter and configuration parameter name expected when listing filters in the Nutch configuration file.
     private static final String VARIABLE = "forum.post.filter";
-    private static final String DELIM = "|";
+    private static final String DELIM = "\\|";
     
     //Defines the configuration parameter used to specify whether to skip indexing documents which do not contain forum posts
     private static final String NO_POSTS = "skip.no.posts";
     
     
-    public static List<IFilter> filters() {
+    public static List<? extends IFilter> filters() {
+    	if(filters == null) {
+    		registerFilters();
+    	}
     	return filters;
     }
     
     public static List<IForumSplitterFactory> factories() {
+    	if(factories == null) {
+    		registerFactories();
+    	}
     	return factories;
     }
     
     /**
      * @return A List of filters to use when extracting meta-data from web pages.
      */
-	public static List<IFilter> registerFilters() {
+	public static List<? extends IFilter> registerFilters() {
 		filters =  instantiate(FILTER_PACKAGE,FILTER_CLASS);
 		return filters;
 	}
@@ -72,13 +77,16 @@ public final class Registry {
 	 * @param insClass
 	 * @return An instantiated list of all class sub-types contained in the given package
 	 */
-	private static <A> List<A> instantiate(final String pack, Class<A> insClass) {
+	public static <A> List<A> instantiate(final String pack, Class<A> insClass) {
 		List<A> instances = new ArrayList<A>();
+		
 		Reflections reflections = new Reflections(pack);
 		Set<Class<? extends A>> classes = reflections.getSubTypesOf(insClass);
 		for(Class<? extends A> cls : classes) {
 			try {
-				instances.add(cls.newInstance());
+				if(!cls.isInterface() && !Modifier.isAbstract(cls.getModifiers())) {
+					instances.add(cls.newInstance());
+				}
 			} catch (InstantiationException e) {
 				LOG.fatal("FATAL: Could not instantiate the class: " + cls.toString());
 			} catch (IllegalAccessException e) {
@@ -94,7 +102,14 @@ public final class Registry {
 	 */
 	public static Set<String> configuredFilters(Configuration conf) {
 		// TODO: allow all filters with null field value
-		return new HashSet<String>(Arrays.asList(conf.get(VARIABLE).split(DELIM)));
+		String[] filters = conf.get(VARIABLE).split(DELIM);
+		HashSet<String> filts = new HashSet<String>();
+
+		for(String filter : filters) {
+			filts.add(filter.trim());
+		}
+		
+		return filts;
 	}
 	
 	/**
@@ -103,6 +118,10 @@ public final class Registry {
 	 */
 	public static boolean skipPosts(Configuration conf) {
 		return Boolean.parseBoolean(conf.get(NO_POSTS, "false"));
+	}
+	
+	public static void main(String[] args) {
+		Registry.configuredFilters(new Configuration());
 	}
 	
 }

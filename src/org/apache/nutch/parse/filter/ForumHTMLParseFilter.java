@@ -12,23 +12,22 @@ import org.apache.nutch.parse.HTMLMetaTags;
 import org.apache.nutch.parse.HtmlParseFilter;
 import org.apache.nutch.parse.Parse;
 import org.apache.nutch.parse.ParseResult;
+import org.apache.nutch.parse.filter.filters.IPageFilter;
+import org.apache.nutch.parse.filter.filters.IPostFilter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
-import org.apache.nutch.splitter.utils.IPageFilter;
-import org.apache.nutch.splitter.utils.IPostFilter;
 import org.apache.nutch.splitter.utils.Registry;
-
 // html imports
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.DocumentFragment;
 
 // Gson imports
 import com.google.gson.Gson;
-
-import org.apache.nutch.index.filter.Post;
-import org.apache.nutch.index.filter.splitter.IForumSplitter;
-import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
 
 /**
  * Used as a first point of contact to parse html for forum posts. Retrieves all
@@ -37,25 +36,10 @@ import org.apache.nutch.index.filter.splitter.IForumSplitterFactory;
  */
 public class ForumHTMLParseFilter implements HtmlParseFilter {
 	
-	{
-		// Instantiate the filters
-		Registry.registerFilters();
-		// Instantiate the forum splitter factories.
-		Registry.registerFactories();
-	}
-		
-	private Configuration conf; 					 			// Boilerplate configuration field.
+    private static final Logger LOG = LoggerFactory.getLogger(ForumHTMLParseFilter.class);
 	
-	private static  List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
-	private static  List<IFilter> filters;					// Filters to parse the page content
-	
-
-	public ForumHTMLParseFilter() {
-		// Instantiate the filters
-		filters = Registry.registerFilters();
-		// Instantiate the forum splitter factories.
-		factories = Registry.registerFactories();
-	}
+	// Boilerplate configuration field.
+	private Configuration conf;
 
 	/**
 	 * Adds forum meta-data to the parsed document structure.
@@ -63,18 +47,20 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	@Override
 	public ParseResult filter(Content content, ParseResult parseResult, HTMLMetaTags metaTags, DocumentFragment doc) {
 		
+		LOG.info("INFO: Begin parsing " + content.getUrl() + " for forum posts.");
+		
 		// Get the parse object which stores the document meta-data.
 	    final Parse parse = parseResult.get(content.getUrl());
 	    
 	    // Get the documents meta-data object in order to add to it.
-	    final Metadata md = parse.getData().getParseMeta();
-	    
-	    // Used to determine if further parsing is required.
-	    boolean postFound = false;	
+	    final Metadata md = parse.getData().getParseMeta();	
 
 	    // Parse to jsoup Document for further parsing -  ignores DocumentFragment (doc) as standard java DOM navigation sucks.
 	    Document jDoc = Jsoup.parse(new String(content.getContent())); 
-	    	    
+	    
+	    // Used to determine if further parsing is required.
+	    boolean postFound = false;
+	    
 	    // Done outside of filter phase to ensure content is available to subsequent filters.
     	List<Post> posts = new ArrayList<Post>();
 	    factoryloop:
@@ -82,7 +68,6 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    	final IForumSplitter fs = fact.create();
 	    	posts = fs.split(jDoc);
 	    	
-			// Add the meta-data to the specified field name.
 	    	postFound = (posts != null && posts.size() > 0) ? true : false;
 	    	if(postFound) {		
 		    	// Breakout as it is assumed only one type of forum tech. exists in a single page.
@@ -94,6 +79,8 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    if(!postFound) {
 	    	return parseResult;
 	    }
+	    
+	    LOG.info("INFO: Posts found - parsing for additional meta-data.");
 	    	    
 	    // Retrieve the configured set of forum filters
 	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
@@ -105,17 +92,23 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    				.filter(filter -> requestedFilters.contains(filter.name()))
 	    				.forEach(filter -> filter.parseContent(post, md)));
 	    
-	    // "serialize" the posts to json string and pass to the meta-data
+	    LOG.info("INFO: Forum post filtering stage complete!");
+	    
+	    // Serialize the posts to json string and pass to the meta-data
 	    final Gson gson = new Gson();
 	    posts.parallelStream()
-	    	.map(post -> gson.toJson(post))
+	    	.map(Post::toJson)
 	    	.forEach(string -> md.add(GlobalFieldValues.POST_FIELD , string));
+	    
+	    LOG.info("INFO: Serialised posts to json.");
 	    
 	    // Pass the content through each of the configured page filters.
 	    Registry.filters().parallelStream()
 	    	.filter(filter -> filter instanceof IPageFilter)
 	    	.filter(filter -> requestedFilters.contains(filter.name()))
 	    	.forEach(filter -> filter.parseContent(content,md));
+	    
+	    LOG.info("INFO: Filtering complete on page: " + content.getUrl());
 	    
 		return parseResult;
 	}
