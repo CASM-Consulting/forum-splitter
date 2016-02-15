@@ -38,9 +38,9 @@ public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 				
 				Document doc = Jsoup.parse(post.postHTML());
 				
-				// Add the forum member who wrote this post
+				// Add the forum member who wrote this post as the (string) hash value of their username.
 				for(Element el : doc.getElementsByClass(MEMBER)){
-					post.put(GlobalFieldValues.MEMBER, el.text().split(" ")[1]);
+					post.put(GlobalFieldValues.MEMBER, String.valueOf(el.text().split(" ")[1].hashCode()));
 				}
 				
 			}

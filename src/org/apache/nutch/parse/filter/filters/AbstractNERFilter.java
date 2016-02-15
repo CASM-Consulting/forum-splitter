@@ -16,8 +16,12 @@ import opennlp.tools.util.Span;
 // logging imports
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+//nutch imports
 import org.apache.nutch.metadata.Metadata;
 import org.apache.nutch.parse.filter.Post;
+
+
 import org.apache.nutch.splitter.utils.SentenceDetector;
 import org.apache.nutch.splitter.utils.Tokeniser;
 
@@ -38,9 +42,8 @@ public abstract class AbstractNERFilter implements IPostFilter {
 	}
 	
 	@Override
-	public void parseContent(Post content, Metadata metaData) {
-		findEntities(content.content()).stream()
-				.forEach(name -> metaData.add(name(), name));
+	public void parseContent(Post content, Metadata metaData) {		
+		content.put(name(), findEntities(content.content()));
 	}
 	
 	/**
@@ -48,19 +51,24 @@ public abstract class AbstractNERFilter implements IPostFilter {
 	 * @return List of all entities found within the text.
 	 */
 	public List<String> findEntities(final String content) {
-		List<String> entities = new ArrayList<String>();
+		final List<String> entities = new ArrayList<String>();
+		
+		// Sentence split and tokenise.
 		final String[] sentences = SentenceDetector.sentences(content);
-		List<String[]> tokens = Arrays.stream(sentences)
-										.filter(sent -> sent.trim().length() <= 0)
-										.filter(sent -> sent == null)
+
+		final List<String[]> tokens = Arrays.stream(sentences)
+										.filter(sent -> sent.trim().length() > 0)
+										.filter(sent -> sent != null)
 										.map(sentence -> Tokeniser.tokenise(sentence))
 										.collect(Collectors.toList());
-		entities.addAll(
-				tokens.stream()
-				 .map(toks -> nameFinder.find(toks))
-				 .filter(namespans -> namespans != null)
-				 .flatMap(spans -> Arrays.asList(Span.spansToStrings(spans, sentences)).stream())
-				 .collect(Collectors.toList()));
+		
+		// Find the entities, adding them to the collection
+		for(String[] toks : tokens) {
+			final Span[] spans = nameFinder.find(toks);
+			if(spans != null && spans.length > 0) {
+				entities.addAll(Arrays.asList(Span.spansToStrings(spans, toks)));
+			}
+		}
 		
 		return entities;
 	}

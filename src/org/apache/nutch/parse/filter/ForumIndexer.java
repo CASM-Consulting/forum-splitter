@@ -65,21 +65,25 @@ public class ForumIndexer implements IndexingFilter {
 		// Add the posts as sub-documents to the parent (eventual SolrInputDocument) document.
 		int i = 0;
 		for(Post post : posts) {
-			LOG.info("INFO: Adding post as Solr sub-document.");
+			LOG.info("INFO: Adding post as Solr child document within the parent webpage Solr document.");
 			
 			final SolrInputDocument subDoc = new SolrInputDocument();
 			// Add the id and post position of the new sub-doc i.e. forum post.
 			subDoc.addField(GlobalFieldValues.ID, doc.getFieldValue(GlobalFieldValues.ID).toString());
-			subDoc.addField(GlobalFieldValues.POSITION, i);			
+			subDoc.addField(GlobalFieldValues.POSITION, i);
+			
 			// Add all other parse fields to the sub-document.
-			for(String field : post.fields().keySet()) {
-				subDoc.addField(field, post.fields().get(field));
-			}
+		    for(String filter : Registry.configuredFilters(conf)) {
+		    	if(post.get(filter) != null) {
+		    		subDoc.addField(filter, post.get(filter));
+		    	}
+		    }
+		    // Add the sub-document as a child of the parent document (webpage containing the post).
 			doc.add(GlobalFieldValues.POST_FIELD, subDoc);
 			i++;
 		}
 				
-		LOG.info("INFO: Forum post sob-documents added.");
+		LOG.info("INFO: Forum-post child documents added.");
 		
 		// Add the number of posts that were found to the meta-data.
 		doc.add(GlobalFieldValues.NUM_POSTS, posts.size());
@@ -87,9 +91,10 @@ public class ForumIndexer implements IndexingFilter {
 	    // Pass all page meta-data to the index document.
 	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
 
-	    Registry.filters().parallelStream()
+	    Registry.filters().stream()											// Cannot be done in parallel.
 	    	.filter(filter -> requestedFilters.contains(filter.name()))
 	    	.filter(filter -> filter instanceof IPageFilter)
+	    	.filter(filter -> data.get(filter.name()) != null)
 	    	.forEach(filter -> doc.add(filter.name(), 
 	    			(data.isMultiValued(filter.name())) ? data.getValues(filter.name()) : data.get(filter.name())));
 	    		

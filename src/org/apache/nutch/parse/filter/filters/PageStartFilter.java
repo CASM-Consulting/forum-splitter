@@ -3,7 +3,6 @@ package org.apache.nutch.parse.filter.filters;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.nutch.metadata.Metadata;
-import org.apache.nutch.parse.filter.ForumHTMLParseFilter;
 import org.apache.nutch.protocol.Content;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
@@ -14,7 +13,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
  */
 public class PageStartFilter implements IPageFilter {
 	
-    private static final Log LOG = LogFactory.getLog(ForumHTMLParseFilter.class);
+    private static final Log LOG = LogFactory.getLog(PageStartFilter.class);
     
 	@Override
 	public void parseContent(Content content, Metadata metaData) {

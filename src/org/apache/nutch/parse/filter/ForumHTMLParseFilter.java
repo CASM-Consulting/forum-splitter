@@ -85,25 +85,25 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    // Retrieve the configured set of forum filters
 	    final Set<String> requestedFilters = Registry.configuredFilters(conf);
 	    
-	    // Pass the post through each of the configured post forum filters.
-	    posts.parallelStream()
-	    	.forEach(post -> Registry.filters().parallelStream()
+	    // Pass the post through each of the configured post forum filters. Cannot be parallel processed.
+	    posts.stream()
+	    	.forEach(post -> Registry.filters().stream()			    
 	    				.filter(filter -> filter instanceof IPostFilter)
 	    				.filter(filter -> requestedFilters.contains(filter.name()))
 	    				.forEach(filter -> filter.parseContent(post, md)));
 	    
 	    LOG.info("INFO: Forum post filtering stage complete!");
 	    
-	    // Serialize the posts to json string and pass to the meta-data
+	    // Serialize the posts to json string and pass to the meta-data. Cannot be parallel processed
 	    final Gson gson = new Gson();
-	    posts.parallelStream()
+	    posts.stream()
 	    	.map(Post::toJson)
 	    	.forEach(string -> md.add(GlobalFieldValues.POST_FIELD , string));
 	    
 	    LOG.info("INFO: Serialised posts to json.");
 	    
-	    // Pass the content through each of the configured page filters.
-	    Registry.filters().parallelStream()
+	    // Pass the content through each of the configured page filters. Cannot be parallel processed
+	    Registry.filters().stream()
 	    	.filter(filter -> filter instanceof IPageFilter)
 	    	.filter(filter -> requestedFilters.contains(filter.name()))
 	    	.forEach(filter -> filter.parseContent(content,md));

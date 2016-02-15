@@ -15,18 +15,11 @@ public class QuestionFilter implements IPageFilter {
 	
 	@Override
 	public void parseContent(Content content, Metadata metaData) {
-		
-		// Try to get the page value if it already exists
-		try {
-		    final Integer start = Integer.parseInt(metaData.get(GlobalFieldValues.PAGE_START));
-		    if(start == 0 && metaData.get(GlobalFieldValues.CONTENT).getBytes().length < 32766) {
-		    	metaData.add(name(), metaData.get(GlobalFieldValues.CONTENT));
-		    }
-		} catch (NumberFormatException e) {
-			// Otherwise find out the page and if it is 0, add the first post as the question.
+		if(metaData.get(GlobalFieldValues.PAGE_START) == null) {
 			final String[] urlS = content.getUrl().split("\\?", 2);
 			if(urlS.length > 1) {
-			    if(!urlS[1].contains("start=") && metaData.get(GlobalFieldValues.CONTENT).getBytes().length < 32766) {
+				// hard-coded byte array check as Lucene has a size limit - (do not want text-general field type as limited field size helps prevent
+			    if(!urlS[1].contains("start=") && metaData.get(GlobalFieldValues.CONTENT).getBytes().length < 32766) { 
 			    	metaData.add(name(), metaData.get(GlobalFieldValues.CONTENT));
 			    }
 			}
@@ -36,6 +29,12 @@ public class QuestionFilter implements IPageFilter {
 
 			    }
 			}
+		}
+		else{
+		    final Integer start = Integer.parseInt(metaData.get(GlobalFieldValues.PAGE_START));
+		    if(start == 0 && metaData.get(GlobalFieldValues.CONTENT).getBytes().length < 32766) {
+		    	metaData.add(name(), metaData.get(GlobalFieldValues.CONTENT));
+		    }
 		}
 	}
 

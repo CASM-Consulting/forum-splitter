@@ -4,6 +4,7 @@ package org.apache.nutch.splitter.utils;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 // logging imports
@@ -12,9 +13,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.nutch.parse.filter.filters.IFilter;
 import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
-import org.eclipse.jdt.core.dom.Modifier;
-// Reflections imports
+
+// reflection imports
 import org.reflections.Reflections;
+import org.eclipse.jdt.core.dom.Modifier;
 
 /**
  * Methods called at runtime to instantiate various classes according to runtime parameters/configuration
@@ -43,17 +45,11 @@ public final class Registry {
     
     
     public static List<? extends IFilter> filters() {
-    	if(filters == null) {
-    		registerFilters();
-    	}
-    	return filters;
+    	return (filters == null) ? registerFilters() : filters;
     }
     
     public static List<IForumSplitterFactory> factories() {
-    	if(factories == null) {
-    		registerFactories();
-    	}
-    	return factories;
+    	return (factories == null) ? registerFactories() : factories;
     }
     
     /**
@@ -77,7 +73,7 @@ public final class Registry {
 	 * @param insClass
 	 * @return An instantiated list of all class sub-types contained in the given package
 	 */
-	public static <A> List<A> instantiate(final String pack, Class<A> insClass) {
+	private static <A> List<A> instantiate(final String pack, Class<A> insClass) {
 		List<A> instances = new ArrayList<A>();
 		
 		Reflections reflections = new Reflections(pack);
@@ -101,14 +97,19 @@ public final class Registry {
 	 * @return Set of all requested filters in the Nutch configuration
 	 */
 	public static Set<String> configuredFilters(Configuration conf) {
-		// TODO: allow all filters with null field value
-		String[] filters = conf.get(VARIABLE).split(DELIM);
-		HashSet<String> filts = new HashSet<String>();
-
-		for(String filter : filters) {
-			filts.add(filter.trim());
+		final String[] filterNames = conf.get(VARIABLE).split(DELIM);
+		HashSet<String> filts;
+		// If forum post filter requested but none configured then assume all are required.
+		if(filterNames == null || filterNames.length <= 0) {
+			filts = new HashSet<String>();
+			for(IFilter filter : filters()) {
+				filts.add(filter.name());
+			}
 		}
-		
+		// else configure only those filters requested in the Configuration.
+		else{ 
+			filts = new HashSet<String>(Arrays.asList(filterNames));
+		}
 		return filts;
 	}
 	
@@ -118,10 +119,6 @@ public final class Registry {
 	 */
 	public static boolean skipPosts(Configuration conf) {
 		return Boolean.parseBoolean(conf.get(NO_POSTS, "false"));
-	}
-	
-	public static void main(String[] args) {
-		Registry.configuredFilters(new Configuration());
 	}
 	
 }

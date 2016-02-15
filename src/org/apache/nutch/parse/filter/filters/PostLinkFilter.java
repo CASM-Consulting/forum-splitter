@@ -23,13 +23,13 @@ import org.jsoup.nodes.Document;
  */
 public class PostLinkFilter implements IPostFilter {
 	
-	public static final String NAME = "postlink";
+	public static final String NAME = GlobalFieldValues.LINKS;
 	public static final String ATT_HTML = "href";
 	public static final Set<String> prefixes = new HashSet<String>(Arrays.asList(new String[]{"www","http","https"}));
 
 	@Override
 	public void parseContent(Post content, Metadata metaData) {
-		content.fields().put(GlobalFieldValues.LINKS, findLinks(content.postHTML()));
+		content.put(NAME, findLinks(content.postHTML()));
 	}
 	
 	/**
@@ -45,11 +45,7 @@ public class PostLinkFilter implements IPostFilter {
 				.map(el -> el.attr(ATT_HTML))
 				.filter(str -> prefixes.stream().anyMatch(prefix -> str.startsWith(prefix)))
 				.collect(Collectors.toList()));
-
-		// Build into a single @String.
-		// TODO: extend @Post fields to be multiValued
-		final StringBuilder sb = new StringBuilder();
-		links.forEach(str -> sb.append(str).append(" "));
+		
 		return links;
 	}
 

@@ -43,13 +43,5 @@ public class SentenceDetector {
 	public static synchronized String[] sentences(String text) {
 		return sentDetector.sentDetect(text);
 	}
-	
-	
-//	public static void main(String[] args) {
-//		String text = "hello how are you? I want to have a party tonight.";
-//		for(String sentence : SentenceDetector.sentences(text)) {
-//			System.out.println(sentence);
-//		}
-//	}
 
 }

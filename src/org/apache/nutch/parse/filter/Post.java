@@ -1,10 +1,9 @@
 package org.apache.nutch.parse.filter;
 
-import java.util.ArrayList;
 // java imports
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
 
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
@@ -15,10 +14,10 @@ import com.google.gson.JsonElement;
 /**
  * Represents a single post in a forum thread.
  */
-public final class Post {
+public final class Post extends HashMap<String,List<String>>{
 	
-	private HashMap<String,List<String>> fields;
-	private String POSTHTML;
+	private static final long serialVersionUID = -976426482036410163L;
+	public static final String POSTHTML = "posthtml";
 	
 	/**
 	 * Private, empty constructor for @Gson "(de)serialization"
@@ -31,67 +30,63 @@ public final class Post {
 	 * @param content post content, html expected
 	 */
 	public Post(String postHTML, String content) {
-		this.POSTHTML = postHTML;
-		fields = new HashMap<String,List<String>>();
-		ArrayList<String> con = new ArrayList<String>();
-		con.add(content);
-		this.fields.put(GlobalFieldValues.CONTENT,con);
+		this.put(GlobalFieldValues.CONTENT,content);
+		this.put(POSTHTML, postHTML);
 	}
 	
+	/**
+	 * Convenience method for adding a single item to the fields
+	 * @param key
+	 * @param value
+	 */
 	public void put(String key, String value) {
-		if(fields.get(key) == null) {
-			fields.put(key, new ArrayList<String>());
-			fields.get(key).add(value);
+		if(this.get(key) == null) {
+			this.put(key, new ArrayList<String>());
+			this.get(key).add(value);
 		}
 		else {
-			fields.get(key).add(value);
+			this.get(key).add(value);
 		}
 	}
 	
 	/**
-	 * @return The post in its entirety.
+	 * @return The entire post in its html form.
 	 */
 	public String postHTML() {
-		return POSTHTML;
+		return this.get(POSTHTML).get(0);
 	}
 	
 	/**
-	 * @return The html content of the post body.
+	 * @return The plain text content of the forum post.
 	 */
 	public String content() {
-		return this.fields.get(GlobalFieldValues.CONTENT).get(0);
+		return this.get(GlobalFieldValues.CONTENT).get(0);
 	}
 	
 	/**
 	 * @return @Post as a json string
 	 */
 	public String toJson() {
-		Gson gson = new Gson();
-		JsonElement tree = gson.toJsonTree(this);
+		final Gson gson = new Gson();
+		final JsonElement tree = gson.toJsonTree(this);
 		return gson.toJson(tree);
 	}
 	
-	public Map<String,List<String>> fields() {
-		return fields;
-	}
-	
+	@Override
 	public String toString() {
 		return this.toJson();
 	}
 	
-	public static void main(String[] args) {
-		
-		Post p = new Post("FISH","WEASEL");
-		p.put("WIGGLE", "CHICKEN");
-		p.put("WIGGLE", "RABBIT");
-		p.put("MOUSE", "CAT");
-		
-		String json = p.toJson();
-		
-		Gson gson = new Gson();
-		Post po = gson.fromJson(json, Post.class);
-		
-		System.out.println(po.toString());
-	}
+//	public static void main(String[] args) {
+//		
+//		Post p = new Post("FISH","WEASEL");
+//		p.put("WIGGLE", "CHICKEN");
+//		p.put("WIGGLE", "RABBIT");
+//		p.put("MOUSE", "CAT");
+//		
+//		String json = p.toJson();
+//		
+//		System.out.println(p.toString());
+//	}
 	
 }
