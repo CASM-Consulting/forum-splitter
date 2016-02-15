@@ -1,14 +1,20 @@
 package org.apache.nutch.parse.forum.splitter;
 
-import java.util.Collection;
+// java imports
 import java.util.LinkedList;
 
+// jsoup imports
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 public class MentalHealthForumSplitterFactory implements IForumSplitterFactory {
 
-	private static final String BODY_NAME = "posthead";
-	private static final String CONTENT = "postcontent";
+	private static final String BODY_NAME = "postbitlegacy";
+	private static final String CONTENT = "content";
+	private static final String MEMBER = "username_container";
 
 	@Override
 	public IForumSplitter create() {
@@ -23,8 +29,11 @@ public class MentalHealthForumSplitterFactory implements IForumSplitterFactory {
 
 		@Override
 		public void mapFields(LinkedList<Post> posts) {
-			// TODO Auto-generated method stub
-			
+			for(Post post : posts) {
+				Document doc = Jsoup.parse(post.postHTML());
+				final String member = doc.getElementsByClass(MEMBER).first().text().split("\\s")[0].trim();
+				post.put(GlobalFieldValues.MEMBER, String.valueOf(member.hashCode()));
+			}
 		}
 
 		
