@@ -22,9 +22,11 @@ import org.apache.nutch.splitter.utils.Registry;
 // html imports
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.w3c.dom.DocumentFragment;
+
+// logging imports
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.DocumentFragment;
 
 // Gson imports
 import com.google.gson.Gson;
@@ -65,6 +67,9 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
     	List<Post> posts = new ArrayList<Post>();
 	    factoryloop:
 	    for(IForumSplitterFactory fact : Registry.factories()) {
+
+			LOG.info("Parsing with factory: " + fact.getClass());
+
 	    	final IForumSplitter fs = fact.create();
 	    	posts = fs.split(jDoc);
 	    	
@@ -77,6 +82,7 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    
 	    // Return if no posts were found on this page.
 	    if(!postFound) {
+			LOG.info("INFO: No posts found in page " + content.getUrl());
 	    	return parseResult;
 	    }
 	    
