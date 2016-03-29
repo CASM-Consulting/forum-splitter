@@ -9,6 +9,7 @@ import org.jsoup.nodes.Document;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
+import org.apache.nutch.splitter.utils.SplitterFactory;
 
 public class MPAForumSplitterFactory extends AbstractForumSplitter {
 	

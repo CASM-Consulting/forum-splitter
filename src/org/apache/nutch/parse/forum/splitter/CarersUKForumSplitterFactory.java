@@ -6,7 +6,7 @@ import java.util.LinkedList;
 //nutch imports
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
-
+import org.apache.nutch.splitter.utils.SplitterFactory;
 // jsoup imports
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

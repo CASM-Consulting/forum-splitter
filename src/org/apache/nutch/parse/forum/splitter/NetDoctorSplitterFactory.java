@@ -1,9 +1,9 @@
 package org.apache.nutch.parse.forum.splitter;
 
-import java.util.Collection;
 import java.util.LinkedList;
 
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.splitter.utils.SplitterFactory;
 
 public class NetDoctorSplitterFactory implements IForumSplitterFactory {
 	
