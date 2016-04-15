@@ -26,7 +26,7 @@ public final class Post extends HashMap<String,List<String>>{
 	
 	/**
 	 * For standard instantiation purposes.
-	 * @param post full post, html expected
+	 * @param postHTML full post, html expected
 	 * @param content post content, html expected
 	 */
 	public Post(String postHTML, String content) {
