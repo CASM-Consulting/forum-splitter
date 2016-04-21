@@ -9,6 +9,7 @@ import org.apache.nutch.splitter.utils.GlobalFieldValues;
 import org.apache.nutch.splitter.utils.SplitterFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 public class PatientInfoSplitterFactory implements IForumSplitterFactory {
 	
@@ -17,10 +18,21 @@ public class PatientInfoSplitterFactory implements IForumSplitterFactory {
 
 	public static final String USER = "post-username";
 	public static final String AVATAR = "avatar-hover";
+	
+	private static final String FUZ = "fuzzy";
+	private static final String DTIME = "datetime";
+	
+	private static final String DOMAIN = "patient.info";
+	
 
 	@Override
 	public IForumSplitter create() {
 		return new PatientInfoSplitter(POST,CONTENT);
+	}
+	
+	@Override
+	public boolean correctDomain(String url) {
+		return url.contains(DOMAIN);
 	}
 	
 	public class PatientInfoSplitter extends AbstractForumSplitter {
@@ -37,15 +49,21 @@ public class PatientInfoSplitterFactory implements IForumSplitterFactory {
 				Document doc = Jsoup.parse(post.postHTML());
 
 				// Add member information
-				String member = doc.getElementsByClass(USER).first().getElementsByClass(AVATAR).first().text();
-				post.put(GlobalFieldValues.MEMBER,member);
-
+				Elements membs = doc.getElementsByClass(USER);
+				if(membs.first() != null) {
+					String member = membs.first().getElementsByClass(AVATAR).first().text();
+					post.put(GlobalFieldValues.MEMBER,String.valueOf(member.hashCode()));
+				}
 
 				// Add post-date information
-				String toks = doc.getElementsByClass("fuzzy").first().attr("datetime").split("T")[0];
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				LocalDate date = LocalDate.parse(toks,dtf);
-				post.put(GlobalFieldValues.POST_DATE,post.toString());
+				Elements time = doc.getElementsByClass(FUZ);
+				if(time.first() != null) {
+					String toks = time.first().attr(DTIME).split("T")[0];
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					LocalDate date = LocalDate.parse(toks,dtf);
+					post.put(GlobalFieldValues.POST_DATE,date.atStartOfDay().toString() + ":00Z");
+				}
+
 			}
 		}
 		

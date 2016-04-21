@@ -13,6 +13,7 @@ import org.apache.nutch.splitter.utils.SplitterFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 	
@@ -21,9 +22,16 @@ public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 	private static final String CONTENT = "phpbb_content";
 	private static final String AUTHOR = "phpbb_author";
 	
+	private static final String DOMAIN = "carersuk.org";
+	
 	@Override
 	public IForumSplitter create() {
 		return new CarersUKForumSplitter(BODY_NAME,CONTENT);
+	}
+	
+	@Override
+	public boolean correctDomain(String url) {
+		return url.contains(DOMAIN);
 	}
 	
 	public class CarersUKForumSplitter extends AbstractForumSplitter {
@@ -47,10 +55,13 @@ public class CarersUKForumSplitterFactory implements IForumSplitterFactory {
 				}
 
 				// Add the post date
-				String[] toks = doc.getElementsByClass(AUTHOR).text().split("\\s");
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM uuuu");
-				LocalDate date = LocalDate.parse(toks[toks.length-4].replace(",","") + " " + toks[toks.length-5].replace(",","") + " " + toks[toks.length-3],dtf);
-				post.put(GlobalFieldValues.POST_DATE,date.toString());
+				Elements author = doc.getElementsByClass(AUTHOR);
+				if(author.first() != null) {
+					String[] toks = author.first().text().split("\\s");
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd MMM uuuu");
+					LocalDate date = LocalDate.parse(toks[toks.length-4].replace(",","") + " " + toks[toks.length-5].replace(",","") + " " + toks[toks.length-3],dtf);
+					post.put(GlobalFieldValues.POST_DATE,date.atStartOfDay().toString() + ":00Z");
+				}
 				
 			}
 		}

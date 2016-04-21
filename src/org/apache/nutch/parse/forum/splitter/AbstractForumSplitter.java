@@ -40,7 +40,7 @@ public abstract class AbstractForumSplitter implements IForumSplitter {
 		List<Element> posts = doc.getElementsByClass(BODY_NAME);
 				
 		// Create a @DefaultPost containing the entire post and the element which contains the post content (assumes there is only one of these).
-		fThread.addAll(posts.parallelStream()
+		fThread.addAll(posts.stream()
 				.map(post -> new Post(post.html(), post.getElementsByClass(CONTENT).text()))
 				.collect(Collectors.toList()));
 		

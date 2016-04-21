@@ -22,6 +22,7 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/IPageFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PostLinkFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/SolrIndexWriter.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/DepressionForumsSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/package-info.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/SaneSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/QuestionFilter.java

@@ -22,5 +22,6 @@ public interface IForumSplitter {
 	 * @return Map the meta-fields contained in the configuration to the tags existing with the forum.
 	 */
 	public void mapFields(LinkedList<Post> posts);
+	
 
 }

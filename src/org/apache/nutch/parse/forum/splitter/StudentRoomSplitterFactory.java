@@ -1,11 +1,15 @@
 package org.apache.nutch.parse.forum.splitter;
 
+// java imports
 import java.util.LinkedList;
+
+// jsoup imports
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 public class StudentRoomSplitterFactory implements IForumSplitterFactory {
 	
@@ -18,6 +22,11 @@ public class StudentRoomSplitterFactory implements IForumSplitterFactory {
 		return new StudentForumSplitter();
 	}
 	
+	@Override
+	public boolean correctDomain(String url) {
+		return false;
+	}
+	
 	private class StudentForumSplitter extends AbstractForumSplitter {
 
 		public StudentForumSplitter() {
@@ -28,8 +37,11 @@ public class StudentRoomSplitterFactory implements IForumSplitterFactory {
 		public void mapFields(LinkedList<Post> posts) {
 			for(Post post : posts) {
 				Document doc = Jsoup.parse(post.postHTML());
-				final String member = doc.getElementsByClass(MEMBER).first().text().split("\\s")[0].trim();
-				post.put(GlobalFieldValues.MEMBER, member);
+				final Elements member = doc.getElementsByClass(MEMBER);
+				if(member.first() != null) {
+					final String mem =  member.first().text().split("\\s")[0].trim();
+					post.put(GlobalFieldValues.MEMBER, String.valueOf(mem.hashCode()));
+				}
 			}
 		}
 		

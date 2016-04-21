@@ -65,6 +65,7 @@ public class ForumIndexer implements IndexingFilter {
 		// Add the posts as sub-documents to the parent (eventual SolrInputDocument) document.
 		int i = 0;
 		for(Post post : posts) {
+			
 			LOG.info("INFO: Adding post as Solr child document within the parent webpage Solr document.");
 			
 			final SolrInputDocument subDoc = new SolrInputDocument();

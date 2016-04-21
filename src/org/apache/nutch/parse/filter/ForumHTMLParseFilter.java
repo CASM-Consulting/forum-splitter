@@ -59,29 +59,29 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 
 	    // Parse to jsoup Document for further parsing -  ignores DocumentFragment (doc) as standard java DOM navigation sucks.
 	    Document jDoc = Jsoup.parse(new String(content.getContent())); 
-	    
-	    // Used to determine if further parsing is required.
-	    boolean postFound = false;
-	    
+	    	    
 	    // Done outside of filter phase to ensure content is available to subsequent filters.
     	List<Post> posts = new ArrayList<Post>();
-	    factoryloop:
+    	splitloop:
 	    for(IForumSplitterFactory fact : Registry.factories()) {
 
 			LOG.info("Parsing with factory: " + fact.getClass());
+			
+			if(!fact.correctDomain(content.getUrl())) {
+				continue;
+			}
 
 	    	final IForumSplitter fs = fact.create();
-	    	posts = fs.split(jDoc);
+		    posts = fs.split(jDoc);
 	    	
-	    	postFound = (posts != null && posts.size() > 0) ? true : false;
-	    	if(postFound) {		
-		    	// Breakout as it is assumed only one type of forum tech. exists in a single page.
-				break factoryloop;	
+	    	if(posts != null && posts.size() > 0) {
+	    		break splitloop;
 	    	}
+
 		}
 	    
 	    // Return if no posts were found on this page.
-	    if(!postFound) {
+	    if(posts == null || posts.size() <= 0) {
 			LOG.info("INFO: No posts found in page " + content.getUrl());
 	    	return parseResult;
 	    }

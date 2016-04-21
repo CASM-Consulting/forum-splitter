@@ -15,6 +15,11 @@ public class NetDoctorSplitterFactory implements IForumSplitterFactory {
 		return new NetDoctorSplitter(CONTENT,BODY);
 	}
 	
+	@Override
+	public boolean correctDomain(String url) {
+		return false;
+	}
+	
 	public class NetDoctorSplitter extends AbstractForumSplitter {
 
 		public NetDoctorSplitter(String bodyName, String contentName) {

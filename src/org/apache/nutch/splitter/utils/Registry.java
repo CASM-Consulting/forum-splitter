@@ -73,7 +73,7 @@ public final class Registry {
 	 * @param insClass
 	 * @return An instantiated list of all class sub-types contained in the given package
 	 */
-	private static <A> List<A> instantiate(final String pack, Class<A> insClass) {
+	private static <A> List<A> instantiate(String pack, Class<A> insClass) {
 		List<A> instances = new ArrayList<A>();
 		
 		Reflections reflections = new Reflections(pack);
@@ -100,7 +100,7 @@ public final class Registry {
 		final String[] filterNames = conf.get(VARIABLE).split(DELIM);
 		HashSet<String> filts;
 		// If forum post filter requested but none configured then assume all are required.
-		if(filterNames == null || filterNames.length <= 0) {
+		if(filterNames == null || conf == null || filterNames.length <= 0) {
 			filts = new HashSet<String>();
 			for(IFilter filter : filters()) {
 				filts.add(filter.name());

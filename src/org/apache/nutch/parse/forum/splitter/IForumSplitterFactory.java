@@ -10,5 +10,11 @@ import org.apache.nutch.splitter.utils.SplitterFactory;
 public interface IForumSplitterFactory {
 
 	public IForumSplitter create();
+	
+	/**
+	 * @param url
+	 * @return true if the given url belongs to this splitters domain
+	 */
+	public boolean correctDomain(String url);
 
 }
