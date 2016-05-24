@@ -5,13 +5,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.nutch.parse.filter.Post;
 // jsoup imports
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import org.apache.nutch.parse.filter.Post;
+
 /**
- * Splits a jsoup document according to the phpBB forum convention.
+ * Splits a jsoup document according to the generic notion that a @Post consists of a tag delimiting the entire post-body 
+ * and a tag delimiting the actual textual/written content of the post.
  * Extends @HashSet to allow additional html tags/classname/ids to be added and later parsed
  * @author jp242
  */
