@@ -25,6 +25,7 @@ public class GlobalFieldValues {
 	public static final String THANKS = "thanks";
 	
 	// Filter fields
+	public static final String PAGE_NUMBER = "page";    // The field name used to index the page number if there is no pagination start value
 	public static final String PAGE_START = "pagestart";// The field name used to index the pagination start point.
 	public static final String PAGE_END = "pageend";	// The field name used to index the pagination end point.
 	public static final String BASE_URL = "baseurl"; 	// The field name used to index the base url of a page.

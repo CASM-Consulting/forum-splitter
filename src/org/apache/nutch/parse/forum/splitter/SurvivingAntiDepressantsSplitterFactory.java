@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 // jsoup imports
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
+import org.jsoup.select.Elements;
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
@@ -52,16 +52,20 @@ public class SurvivingAntiDepressantsSplitterFactory implements IForumSplitterFa
 				Document doc = Jsoup.parse(post.postHTML());
 				
 				// Get the member information
-				String member = doc.getElementsByClass(MEMBER).first().text().trim();
-				post.put(GlobalFieldValues.MEMBER, member);
-				
-				// Get the post-date information	
-				String dateS = doc.getElementsByClass(POSTDATE).first().attr(ATTNAME).split("T")[0];
-				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				LocalDate date = LocalDate.parse(dateS,dtf);
-				post.put(GlobalFieldValues.POST_DATE, date.atStartOfDay() + ":00Z");
-				
-				
+				Elements members = doc.getElementsByClass(MEMBER);
+				if(members.first() != null) {
+					String member = members.first().text().trim();
+					post.put(GlobalFieldValues.MEMBER, String.valueOf(member.hashCode()));
+				}
+
+				// Get the post-date information
+				Elements dates = doc.getElementsByClass(POSTDATE);
+				if(dates.first() != null) {
+					String dateS = doc.getElementsByClass(POSTDATE).first().attr(ATTNAME).split("T")[0];
+					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					LocalDate date = LocalDate.parse(dateS,dtf);
+					post.put(GlobalFieldValues.POST_DATE, date.atStartOfDay() + ":00Z");
+				}
 			}
 			
 		}

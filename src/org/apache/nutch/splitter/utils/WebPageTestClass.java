@@ -64,7 +64,7 @@ public class WebPageTestClass {
 		
 //		System.out.println(LocalDate.now().atStartOfDay().toString());
 		
-		String page = "http://survivingantidepressants.org/index.php?/topic/9167-how-to-calculate-dosages/?hl=spreadsheet#entry157445";
+		String page = "http://survivingantidepressants.org/index.php?/topic/8794-kt38-quit-zoloft-after-35-weeks-dizzinesssea-sick-agitated-etc/page-4";
 		WebPageTestClass.run(page);
 		
 	}

@@ -12,6 +12,7 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/NetDoctorSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/IForumSplitter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/CarersUKForumSplitterFactory.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PageNumberFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/GlobalFieldValues.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/IForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/ForumIndexer.java
@@ -26,6 +27,7 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/package-info.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/SaneSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/QuestionFilter.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/SurvivingAntiDepressantsSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/WebPageTestClass.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/SplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/query/SolrStatsQueries.java
@@ -35,5 +37,6 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/AbstractForumSplitter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/MPAForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/PatientInfoSplitterFactory.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/AbstractPageFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/LocationEntityFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PersonEntityFilter.java
