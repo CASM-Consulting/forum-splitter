@@ -3,7 +3,7 @@ package org.apache.nutch.parse.filter.filters;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 /**
- * A filter which attempts to 
+ * A filter which attempts to extract the page number from the url.
  * @author jp242
  */
 public class PageNumberFilter extends AbstractPageFilter {
@@ -18,15 +18,6 @@ public class PageNumberFilter extends AbstractPageFilter {
 	@Override
 	protected String splitRegex() {
 		return REGEX;
-	}
-	
-	public static void main(String[] args) {
-		
-		String s = "?page=4930293verver";
-		String s1 = "?page-244322vre";
-		
-		System.out.println(s.split(REGEX)[1]);
-		System.out.println(s1.split(REGEX)[1]);
 	}
 
 }

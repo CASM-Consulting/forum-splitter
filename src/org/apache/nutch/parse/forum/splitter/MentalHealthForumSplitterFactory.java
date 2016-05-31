@@ -56,7 +56,6 @@ public class MentalHealthForumSplitterFactory implements IForumSplitterFactory {
 				final Elements member = doc.getElementsByClass(MEMBER);
 				if(member.first() != null) {
 					final String mem =  member.first().text().split("\\s")[0].trim();
-					LOG.info("MEMBER: " + member);
 					post.put(GlobalFieldValues.MEMBER, String.valueOf(mem.hashCode()));
 				}
 				
@@ -66,7 +65,6 @@ public class MentalHealthForumSplitterFactory implements IForumSplitterFactory {
 					String toks = dates.first().text().split(",")[0];
 					DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yy");
 					LocalDate date = LocalDate.parse(toks,dtf);
-					LOG.info("DATE: " + date.toString());
 					post.put(GlobalFieldValues.POST_DATE,date.atStartOfDay().toString() + ":00Z");
 				}
 				else{

@@ -18,7 +18,7 @@ public class SaneSplitterFactory implements IForumSplitterFactory {
 	private static final String USERNAME = "username";
 	private static final String AUTHOR = "author";
 	
-	private static final String DOMAIN = "http://sane.org.uk/"; 
+	private static final String DOMAIN = "sane.org.uk"; 
 
 	@Override
 	public IForumSplitter create() {
