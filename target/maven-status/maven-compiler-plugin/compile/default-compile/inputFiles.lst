@@ -14,6 +14,7 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/CarersUKForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PageNumberFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/GlobalFieldValues.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PageSizeFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/IForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/ForumIndexer.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/SolrConstants.java
@@ -22,6 +23,7 @@
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/Registry.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/IPageFilter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/filter/filters/PostLinkFilter.java
+/Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/ChildlineForumSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/SolrIndexWriter.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/DepressionForumsSplitterFactory.java
 /Volumes/LocalDataHD/j/jp/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/package-info.java

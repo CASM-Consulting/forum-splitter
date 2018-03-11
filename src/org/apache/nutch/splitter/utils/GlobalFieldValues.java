@@ -9,6 +9,8 @@ public class GlobalFieldValues {
 	
 	// Document id fields
 	public static final String ID = "id";
+	public static final String POST_ID = "post_id";
+	public static final String THREAD_ID = "thread_id";
 	
 	//Post splitting fields
 	public static final String POST_FIELD = "post";	// The field name used to index the forum-post meta-data.
@@ -23,6 +25,8 @@ public class GlobalFieldValues {
 	public static final String TITLE = "title";
 	public static final String LOCATION = "location";
 	public static final String THANKS = "thanks";
+	public static final String QUOTE_MEM = "quoted_member";
+	public static final String QUOTE_DATE = "quoted_date";
 	
 	// Filter fields
 	public static final String PAGE_NUMBER = "page";    // The field name used to index the page number if there is no pagination start value

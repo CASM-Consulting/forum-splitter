@@ -70,8 +70,8 @@ public class ForumIndexer implements IndexingFilter {
 			
 			final SolrInputDocument subDoc = new SolrInputDocument();
 			// Add the id and post position of the new sub-doc i.e. forum post.
-			subDoc.addField(GlobalFieldValues.ID, doc.getFieldValue(GlobalFieldValues.ID).toString());
-			subDoc.addField(GlobalFieldValues.POSITION, i);
+			subDoc.addField(GlobalFieldValues.ID, post.get(GlobalFieldValues.ID).get(0));
+			subDoc.addField(GlobalFieldValues.POSITION, post.get(GlobalFieldValues.POSITION).get(0));
 			
 			// Add all other parse fields to the sub-document.
 		    for(String filter : Registry.configuredFilters(conf)) {

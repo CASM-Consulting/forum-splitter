@@ -4,6 +4,7 @@ package org.apache.nutch.parse.filter;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 // nutch/hadoop imports
 import org.apache.hadoop.conf.Configuration;
@@ -61,7 +62,7 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    Document jDoc = Jsoup.parse(new String(content.getContent())); 
 	    	    
 	    // Done outside of filter phase to ensure content is available to subsequent filters.
-    	List<Post> posts = new ArrayList<Post>();
+    	LinkedList<Post> posts = new LinkedList<Post>();
     	splitloop:
 	    for(IForumSplitterFactory fact : Registry.factories()) {
 
@@ -77,6 +78,8 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    	if(posts != null && posts.size() > 0) {
 	    		break splitloop;
 	    	}
+	    	
+	    	fs.mapFields(posts);
 
 		}
 	    
