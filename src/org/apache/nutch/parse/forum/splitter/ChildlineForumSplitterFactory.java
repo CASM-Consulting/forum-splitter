@@ -10,15 +10,15 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+// Used in testing
+//import java.io.File;
+//import java.io.IOException;
+
 // java imports
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
@@ -181,28 +181,28 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 		}
 	}
 	
-	public static void main(String[] args) {
-		String testpage = "/Volumes/DataDrive/jackpay-data-folders/Documents/Projects/NSPCC/test-page/test-page-1.html";
-		ChildlineForumSplitterFactory cfsf = new ChildlineForumSplitterFactory();
-		ChildlineForumSplitter csf = cfsf.create();
-		try {
-			Document doc = Jsoup.parse(new File(testpage),"UTF-8");
-			LinkedList<Post> posts = csf.split(doc);
-			csf.mapFields(posts);
-			for(Post post: posts) {
-				for (String meta : post.keySet()) {
-					if(!meta.equals("posthtml")){
-						System.out.println(meta  + " " + post.get(meta).get(0));
-					}
-				}
-				System.out.println();
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
+//	public static void main(String[] args) {
+//		String testpage = "/Volumes/DataDrive/jackpay-data-folders/Documents/Projects/NSPCC/test-page/test-page-1.html";
+//		ChildlineForumSplitterFactory cfsf = new ChildlineForumSplitterFactory();
+//		ChildlineForumSplitter csf = cfsf.create();
+//		try {
+//			Document doc = Jsoup.parse(new File(testpage),"UTF-8");
+//			LinkedList<Post> posts = csf.split(doc);
+//			csf.mapFields(posts);
+//			for(Post post: posts) {
+//				for (String meta : post.keySet()) {
+//					if(!meta.equals("posthtml")){
+//						System.out.println(meta  + " " + post.get(meta).get(0));
+//					}
+//				}
+//				System.out.println();
+//			}
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//	}
 
 }
