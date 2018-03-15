@@ -149,7 +149,7 @@ public class LocalForumScraper {
 		private String domain;
 		
 		@Parameter(names = {"-h","--headers"},description = "Optional param allowing header/content specification")
-		private List<String> headers;
+		private List<String> headers = new ArrayList<String>();
 		
 		public String localDir() {
 			return localDir;
