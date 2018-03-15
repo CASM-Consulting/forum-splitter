@@ -82,9 +82,10 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 				// Parse the post date info.
 				try {
 					Date date = sdf.parse(nameDate[1].trim());
-					String formattedDate = sdf2.format(date).trim().replace(" ", "T") + "Z";
+					String formattedDate = sdf2.format(date);
 					post.put(GlobalFieldValues.POST_DATE, formattedDate);
 				} catch (ParseException e) {
+					System.out.println("post info:" + nameDate[1].trim());
 					LOG.error("Failed to parse the date in current format");
 				}
 				
@@ -97,6 +98,7 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 						Date date = sdf.parse(quotedInfo[1].trim());
 						post.put(GlobalFieldValues.QUOTE_DATE, sdf2.format(date));	
 					} catch (ParseException e) {
+						System.out.println("quoted info" + quotedInfo);
 						LOG.error("Failed to parse the date in current format");
 					}
 				}
