@@ -1,9 +1,7 @@
 package org.apache.nutch.parse.filter;
 
 // java imports
-import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 // nutch/hadoop imports
@@ -78,8 +76,6 @@ public class ForumHTMLParseFilter implements HtmlParseFilter {
 	    	if(posts != null && posts.size() > 0) {
 	    		break splitloop;
 	    	}
-	    	
-	    	fs.mapFields(posts);
 
 		}
 	    

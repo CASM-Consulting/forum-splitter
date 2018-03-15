@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.dom.Modifier;
 public final class Registry {
 
 	private static List<IForumSplitterFactory> factories;	// Splitters designed to parse specific forums
-	private static List<? extends IFilter> filters;					// Filters to parse the page content
+	private static List<? extends IFilter> filters;			// Filters to parse the page content
 	
     private static final Log LOG = LogFactory.getLog(Registry.class);
     
