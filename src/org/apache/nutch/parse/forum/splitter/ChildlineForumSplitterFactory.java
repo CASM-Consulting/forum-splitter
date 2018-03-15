@@ -98,7 +98,7 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 						Date date = sdf.parse(quotedInfo[1].trim());
 						post.put(GlobalFieldValues.QUOTE_DATE, sdf2.format(date));	
 					} catch (ParseException e) {
-						System.out.println("quoted info" + quotedInfo);
+						System.out.println("quoted info" + quotedInfo[1]);
 						LOG.error("Failed to parse the date in current format");
 					}
 				}
