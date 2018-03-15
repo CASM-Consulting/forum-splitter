@@ -13,12 +13,14 @@ import au.com.bytecode.opencsv.CSVWriter;
 
 //java imports
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.io.FileWriter;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.parse.forum.splitter.IForumSplitter;
 import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
@@ -53,7 +55,32 @@ public class LocalForumScraper {
 	 */
 	public void scrapeDirectory() throws IOException {
 		CSVWriter writer = new CSVWriter(new FileWriter(output));
-		Iterator<File> files = FileUtils.iterateFiles(inputDir, new String[]{"html"}, true);
+		Iterator<File> files = FileUtils.iterateFiles(inputDir, new IOFileFilter(){
+
+			@Override
+			public boolean accept(File dir, String name) {
+				// TODO Auto-generated method stub
+				return name.contains("html");
+			}
+
+			@Override
+			public boolean accept(File file) {
+				// TODO Auto-generated method stub
+				return file.getName().contains("html");
+			}},new IOFileFilter(){
+
+				@Override
+				public boolean accept(File pathname) {
+					// TODO Auto-generated method stub
+					return true;
+				}
+
+				@Override
+				public boolean accept(File dir, String name) {
+					// TODO Auto-generated method stub
+					return true;
+				}});
+		
 		String[] headers = null;
 		while(files.hasNext()) {
 			File next = files.next();
