@@ -90,7 +90,7 @@ public class LocalForumScraper {
 			LinkedList<Post> posts = scrapeDocument(next);
 			
 			// Setup csv header if not already 
-			if(this.headers == null || this.headers.length <= 0) {
+			if((this.headers == null || this.headers.length <= 0) && posts.size() > 0) {
 				headers = posts.get(0).keySet().toArray(new String[posts.get(0).keySet().size()]);
 				writer.writeNext(headers);
 			}
