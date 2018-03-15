@@ -17,6 +17,7 @@ import java.io.FileFilter;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.io.FileWriter;
 
 import org.apache.commons.io.FileUtils;
@@ -36,6 +37,7 @@ public class LocalForumScraper {
 	private final File inputDir;
 	private final String domain;
 	private final String output;
+	private String[] headers;
 	
 	public LocalForumScraper(String[] args){
 		InputParser ip = new InputParser();
@@ -47,6 +49,7 @@ public class LocalForumScraper {
 		this.inputDir = new File(ip.localDir());
 		this.domain = ip.domain();
 		this.output = ip.output();
+		this.headers = ip.headers().toArray(new String[ip.headers().size()]);
 	}
 	
 	/**
@@ -81,13 +84,12 @@ public class LocalForumScraper {
 					return true;
 				}});
 		
-		String[] headers = null;
 		while(files.hasNext()) {
 			File next = files.next();
 			LinkedList<Post> posts = scrapeDocument(next);
 			
 			// Setup csv header if not already 
-			if(headers == null && posts.size() > 0) {
+			if(this.headers == null || this.headers.length <= 0) {
 				headers = posts.get(0).keySet().toArray(new String[posts.get(0).keySet().size()]);
 				writer.writeNext(headers);
 			}
@@ -146,6 +148,9 @@ public class LocalForumScraper {
 		required=true)
 		private String domain;
 		
+		@Parameter(names = {"-h","--headers"},description = "Optional param allowing header/content specification")
+		private List<String> headers;
+		
 		public String localDir() {
 			return localDir;
 		}
@@ -156,6 +161,10 @@ public class LocalForumScraper {
 		
 		public String output() {
 			return output;
+		}
+		
+		public List<String> headers() {
+			return headers;
 		}
 		
 	}
