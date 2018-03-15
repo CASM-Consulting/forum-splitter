@@ -85,6 +85,10 @@ public class LocalForumScraper {
 					return true;
 				}});
 		
+		if(headers != null && headers.length > 0) {
+			writer.writeNext(headers);
+		}
+		
 		while(files.hasNext()) {
 			File next = files.next();
 			LinkedList<Post> posts = scrapeDocument(next);
