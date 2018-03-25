@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.print.attribute.standard.PrinterLocation;
+
 import java.io.FileWriter;
 
 import org.apache.commons.io.FileUtils;
@@ -58,6 +61,7 @@ public class LocalForumScraper {
 	 * @throws IOException
 	 */
 	public void scrapeDirectory() throws IOException {
+		int j = 0;
 		CSVWriter writer = new CSVWriter(new FileWriter(output));
 		Iterator<File> files = FileUtils.iterateFiles(inputDir, new IOFileFilter(){
 
@@ -90,6 +94,7 @@ public class LocalForumScraper {
 		}
 		
 		while(files.hasNext()) {
+			j++;
 			File next = files.next();
 			LinkedList<Post> posts = scrapeDocument(next);
 			
@@ -108,6 +113,7 @@ public class LocalForumScraper {
 				writer.writeNext(row);
 			}
 		}
+		System.out.println(j);
 		writer.close();
 	}
 	

@@ -10,15 +10,15 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-// Used in testing
-//import java.io.File;
-//import java.io.IOException;
-
+import java.io.File;
+import java.io.IOException;
 // java imports
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
@@ -37,7 +37,8 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 	private static final String TOPIC_CONTAINER = "js-topic-container";
 	private static final String ID = "data-reply-id";
 	private static final String POST_BODY_NAME = "js-reply-container";
-	private static final String POST_CONTENT = "forum__post__content__inner";
+	private static final String POST_CONTENT = "forum__post__content";
+	private static final String POST_CONTENT_INNER = "forum__post__content__inner";
 	private static final String QUOTE = "forum__quoted-message";
 	private static final String CD_DATA = "p";
 	private static final String TOPIC_ID = "data-topic-id";
@@ -48,7 +49,7 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 
 	@Override
 	public ChildlineForumSplitter create() {
-		return new ChildlineForumSplitter(POST_BODY_NAME,POST_CONTENT);
+		return new ChildlineForumSplitter(POST_BODY_NAME,POST_CONTENT_INNER);
 	}
 
 	@Override
@@ -82,10 +83,9 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 				// Parse the post date info.
 				try {
 					Date date = sdf.parse(nameDate[1].trim());
-					String formattedDate = sdf2.format(date);
+					String formattedDate = sdf2.format(date).trim().replace(" ", "T") + "Z";
 					post.put(GlobalFieldValues.POST_DATE, formattedDate);
 				} catch (ParseException e) {
-					System.out.println("post info:" + nameDate[1].trim());
 					LOG.error("Failed to parse the date in current format");
 				}
 				
@@ -98,7 +98,6 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 						Date date = sdf.parse(quotedInfo[1].trim());
 						post.put(GlobalFieldValues.QUOTE_DATE, sdf2.format(date));	
 					} catch (ParseException e) {
-						System.out.println("quoted info" + quotedInfo[1]);
 						LOG.error("Failed to parse the date in current format");
 					}
 				}
@@ -149,14 +148,16 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			
 //			// check it is not an empty post (there seem to be instances...) and add meta-data
 			for(Element post : replies) {
-				final Elements reply_content = post.getElementsByClass(this.CONTENT);
+				final Elements reply_content = post.getElementsByClass(POST_CONTENT).first().getElementsByClass(POST_CONTENT_INNER);
+				System.out.println(reply_content.size());
+
 				if(reply_content.size() > 0) {
-					final Elements text = reply_content.get(0).getElementsByTag(CD_DATA);
+					final Elements text = reply_content.first().getElementsByTag(CD_DATA);
 					final StringBuilder post_text = new StringBuilder();
 					for(Element element : text) {
 						post_text.append(element.text()).append(" ");
 					}
-					
+//					System.out.println(post_text.toString());
 					// Get the post identifying meta-data
 					final Post newPost = new Post(post.html(),post_text.toString());
 					newPost.put(GlobalFieldValues.ID, post.attr(ID));
@@ -183,28 +184,28 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 		}
 	}
 	
-//	public static void main(String[] args) {
-//		String testpage = "/Volumes/DataDrive/jackpay-data-folders/Documents/Projects/NSPCC/test-page/test-page-1.html";
-//		ChildlineForumSplitterFactory cfsf = new ChildlineForumSplitterFactory();
-//		ChildlineForumSplitter csf = cfsf.create();
-//		try {
-//			Document doc = Jsoup.parse(new File(testpage),"UTF-8");
-//			LinkedList<Post> posts = csf.split(doc);
-//			csf.mapFields(posts);
-//			for(Post post: posts) {
-//				for (String meta : post.keySet()) {
-//					if(!meta.equals("posthtml")){
-//						System.out.println(meta  + " " + post.get(meta).get(0));
-//					}
-//				}
-//				System.out.println();
-//			}
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//	}
+	public static void main(String[] args) {
+		String testpage = "/Volumes/DataDrive/jackpay-data-folders/Documents/Projects/NSPCC/test-page/test-page-1.html";
+		ChildlineForumSplitterFactory cfsf = new ChildlineForumSplitterFactory();
+		ChildlineForumSplitter csf = cfsf.create();
+		try {
+			Document doc = Jsoup.parse(new File(testpage),"UTF-8");
+			LinkedList<Post> posts = csf.split(doc);
+			csf.mapFields(posts);
+			for(Post post: posts) {
+				for (String meta : post.keySet()) {
+					if(!meta.equals("posthtml")){
+						System.out.println(meta  + " " + post.get(meta).get(0));
+					}
+				}
+				System.out.println();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 
 }
