@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter;
+package org.apache.nutch.parse.forum.splitter.wellcome;
 
 // java imports
 import java.util.LinkedList;
@@ -8,6 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 import org.apache.nutch.splitter.utils.SplitterFactory;
 

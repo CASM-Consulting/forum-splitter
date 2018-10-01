@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter;
+package org.apache.nutch.parse.forum.splitter.wellcome;
 
 // java imports
 import java.time.LocalDate;
@@ -14,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 public class MentalHealthForumSplitterFactory implements IForumSplitterFactory {

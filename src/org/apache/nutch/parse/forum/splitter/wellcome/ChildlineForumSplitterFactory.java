@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter;
+package org.apache.nutch.parse.forum.splitter.wellcome;
 
 // Jsoup imports
 import org.jsoup.Jsoup;
@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.nutch.parse.filter.Post;
+import org.apache.nutch.parse.forum.splitter.IForumSplitter;
+import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 
 /**
