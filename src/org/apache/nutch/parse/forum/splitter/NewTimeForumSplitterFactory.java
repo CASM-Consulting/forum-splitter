@@ -1,31 +1,28 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 
-//logging imports
+// logging imports
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 
-public class NewsBitesForumSplitterFactory implements IForumSplitterFactory {
+public class NewTimeForumSplitterFactory implements IForumSplitterFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(NewTimeForumSplitterFactory.class);
 
 	
-	public static final String DOMAIN = "newsbitesfinance.com";
+	public static final String DOMAIN = "newtimes.co.rw";
 	
-	private static final String BODY_NAME = "container";
-	private static final String CONTENT = "xml_body";
+	private static final String BODY_NAME = "article-media";
+	private static final String CONTENT = "article-content";
 
 	@Override
 	public IForumSplitter create() {
-		return new NewsBitesForumSplitter();
+		return new NewTimesForumSplitter();
 	}
 
 	@Override
@@ -38,9 +35,9 @@ public class NewsBitesForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class NewsBitesForumSplitter extends AbstractForumSplitter {
+	public class NewTimesForumSplitter extends AbstractForumSplitter {
 
-		public NewsBitesForumSplitter() {
+		public NewTimesForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 

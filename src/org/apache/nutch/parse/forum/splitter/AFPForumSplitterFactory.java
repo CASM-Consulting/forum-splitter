@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
@@ -9,26 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
 * @author jp242
 */
-public class HRWForumSplitterFactory implements IForumSplitterFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(HRWForumSplitterFactory.class);
+public class AFPForumSplitterFactory implements IForumSplitterFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(AFPForumSplitterFactory.class);
 	
-	public static final String DOMAIN = "hrw.org";
+	public static final String DOMAIN = "afp.com";
 
-	private final String BODY_NAME = "article-content";
-	private final String CONTENT = "article-body";
+	private final String BODY_NAME = "article_content";
+	private final String CONTENT = "text-content";
 
 	@Override
 	public IForumSplitter create() {
-		return new HRWForumSplitter();
+		return new AFPForumSplitter();
 	}
 
 	@Override
@@ -41,9 +38,9 @@ public class HRWForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class HRWForumSplitter extends AbstractForumSplitter {
+	public class AFPForumSplitter extends AbstractForumSplitter {
 
-		public HRWForumSplitter() {
+		public AFPForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 

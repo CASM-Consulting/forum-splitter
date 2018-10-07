@@ -1,13 +1,10 @@
-package org.apache.nutch.parse.forum.splitter.wellcome;
+package org.apache.nutch.parse.forum.splitter;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
 import org.apache.nutch.splitter.utils.SplitterFactory;
 import org.jsoup.Jsoup;

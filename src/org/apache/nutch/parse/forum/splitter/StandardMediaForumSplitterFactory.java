@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
@@ -9,26 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
 * @author jp242
 */
-public class RFIForumSplitterFactory implements IForumSplitterFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(RFIForumSplitterFactory.class);
+public class StandardMediaForumSplitterFactory implements IForumSplitterFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(StandardMediaForumSplitterFactory.class);
 	
-	public static final String DOMAIN = "rfi.fr";
+	public static final String DOMAIN = "standardmedia.co.ke";
 
-	private final String BODY_NAME = "row";
-	private final String CONTENT = "pub-content";
+	private final String BODY_NAME = "col-xs-8";
+	private final String CONTENT = "main-article";
 
 	@Override
 	public IForumSplitter create() {
-		return new RFIForumSplitter();
+		return new StandardMediaForumSplitter();
 	}
 
 	@Override
@@ -41,9 +38,9 @@ public class RFIForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class RFIForumSplitter extends AbstractForumSplitter {
+	public class StandardMediaForumSplitter extends AbstractForumSplitter {
 
-		public RFIForumSplitter() {
+		public StandardMediaForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 

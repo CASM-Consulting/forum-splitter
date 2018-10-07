@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
+import org.apache.nutch.parse.forum.splitter.AFPForumSplitterFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,6 +39,9 @@ public class WebPageTestClass {
 				System.out.println(elem.getElementsByClass(CONTENT).first().text());
 				System.out.println();
 				
+				AFPForumSplitterFactory splitter = new AFPForumSplitterFactory();
+				Post post = 
+				
 				
 //				System.out.println(elem.getElementsByClass(CONTENT).text());
 	//				System.out.println(elem.getElementsByClass("username").first().text());
@@ -47,7 +51,7 @@ public class WebPageTestClass {
 //			String dateS = s[4] + " " + s[5].replace(",","") + " " + s[6];
 //			String dateS = elem.getElementsByClass("published").first().attr("title");
 ////			String toks = doc.getElementsByClass("post-username").first().getElementsByClass("avatar-hover").first().text();
-			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 //			LocalDate date = LocalDate.parse(dateS,dtf);
 ////			LocalDate date = LocalDate.from(ta);
 ////			LocalDate date = LocalDate.parse("Tue Apr 2016",dtf);
@@ -65,8 +69,7 @@ public class WebPageTestClass {
 	public static void main(String[] args) {
 		
 //		System.out.println(LocalDate.now().atStartOfDay().toString());
-		
-		String page = "http://survivingantidepressants.org/index.php?/topic/8794-kt38-quit-zoloft-after-35-weeks-dizzinesssea-sick-agitated-etc/page-4";
+		String page = "";
 		WebPageTestClass.run(page);
 		
 	}

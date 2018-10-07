@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
@@ -9,26 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
 * @author jp242
 */
-public class APNewsForumSplitterFactory implements IForumSplitterFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(APNewsForumSplitterFactory.class);
+public class TheEastAfricanForumSplitterFactory implements IForumSplitterFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(TheEastAfricanForumSplitterFactory.class);
 	
-	public static final String DOMAIN = "apnews.com";
+	public static final String DOMAIN = "theeastafrican.co.ke";
 
-	private final String BODY_NAME = "articleContent";
-	private final String CONTENT = "articleBody";
+	private final String BODY_NAME = "story-view";
+	private final String CONTENT = "article";
 
 	@Override
 	public IForumSplitter create() {
-		return new APNewsForumSplitter();
+		return new TheCitizenForumSplitter();
 	}
 
 	@Override
@@ -41,9 +38,9 @@ public class APNewsForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class APNewsForumSplitter extends AbstractForumSplitter {
+	public class TheCitizenForumSplitter extends AbstractForumSplitter {
 
-		public APNewsForumSplitter() {
+		public TheCitizenForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 

@@ -1,19 +1,15 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //Logging 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

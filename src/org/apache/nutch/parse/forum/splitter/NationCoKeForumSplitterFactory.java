@@ -1,4 +1,4 @@
-package org.apache.nutch.parse.forum.splitter.acled;
+package org.apache.nutch.parse.forum.splitter;
 
 //java net imports
 import java.net.URISyntaxException;
@@ -9,26 +9,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
-import org.apache.nutch.parse.forum.splitter.AbstractForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitter;
-import org.apache.nutch.parse.forum.splitter.IForumSplitterFactory;
 import org.apache.nutch.splitter.utils.Utils;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
 * @author jp242
 */
-public class NewVisionForumSplitterFactory implements IForumSplitterFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(NewVisionForumSplitterFactory.class);
+public class NationCoKeForumSplitterFactory implements IForumSplitterFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(NationCoKeForumSplitterFactory.class);
 	
-	public static final String DOMAIN = "newvision.co.ug";
+	public static final String DOMAIN = "nation.co.ke";
 
-	private final String BODY_NAME = "container_left";
-	private final String CONTENT = "article-content";
+	private final String BODY_NAME = "story-view";
+	private final String CONTENT = "article";
 
 	@Override
 	public IForumSplitter create() {
-		return new NewVisionForumSplitter();
+		return new NationCoKeForumSplitter();
 	}
 
 	@Override
@@ -41,9 +38,9 @@ public class NewVisionForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class NewVisionForumSplitter extends AbstractForumSplitter {
+	public class NationCoKeForumSplitter extends AbstractForumSplitter {
 
-		public NewVisionForumSplitter() {
+		public NationCoKeForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 
