@@ -17,8 +17,8 @@ public class NewTimeForumSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String DOMAIN = "newtimes.co.rw";
 	
-	private static final String BODY_NAME = "article-media";
-	private static final String CONTENT = "article-content";
+	private static final String BODY_NAME = "article-container";
+	private static final String CONTENT = "field-item";
 
 	@Override
 	public IForumSplitter create() {

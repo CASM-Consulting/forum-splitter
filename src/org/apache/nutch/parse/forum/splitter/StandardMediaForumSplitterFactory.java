@@ -20,7 +20,7 @@ public class StandardMediaForumSplitterFactory implements IForumSplitterFactory 
 	
 	public static final String DOMAIN = "standardmedia.co.ke";
 
-	private final String BODY_NAME = "col-xs-8";
+	private final String BODY_NAME = "site-wrapper";
 	private final String CONTENT = "main-article";
 
 	@Override

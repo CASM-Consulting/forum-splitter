@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.Utils;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
@@ -20,8 +22,7 @@ public class RFIForumSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String DOMAIN = "rfi.fr";
 
-	private final String BODY_NAME = "row";
-	private final String CONTENT = "pub-content";
+	private final String BODY_NAME = "article";
 
 	@Override
 	public IForumSplitter create() {
@@ -38,14 +39,21 @@ public class RFIForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class RFIForumSplitter extends AbstractForumSplitter {
+	public class RFIForumSplitter implements IForumSplitter {
 
-		public RFIForumSplitter() {
-			super(BODY_NAME, CONTENT);
-		}
+		public void mapFields(LinkedList<Post> posts) {}
 
 		@Override
-		public void mapFields(LinkedList<Post> posts) {}
+		public LinkedList<Post> split(Document doc) {
+			
+			LinkedList<Post> fThread = new LinkedList<Post>();
+			
+			Element elem = doc.getElementsByTag(BODY_NAME).first();
+			
+			fThread.add(new Post(elem.html(),elem.text()));
+			
+			return fThread;
+		}
 		
 	}
 	

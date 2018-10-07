@@ -21,7 +21,7 @@ public class AFPForumSplitterFactory implements IForumSplitterFactory {
 	public static final String DOMAIN = "afp.com";
 
 	private final String BODY_NAME = "article_content";
-	private final String CONTENT = "text-content";
+	private final String CONTENT = "textcontent";
 
 	@Override
 	public IForumSplitter create() {

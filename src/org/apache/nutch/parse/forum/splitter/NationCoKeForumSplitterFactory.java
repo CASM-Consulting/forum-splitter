@@ -20,8 +20,8 @@ public class NationCoKeForumSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String DOMAIN = "nation.co.ke";
 
-	private final String BODY_NAME = "story-view";
-	private final String CONTENT = "article";
+	private final String BODY_NAME = "article";
+	private final String CONTENT = "body-copy";
 
 	@Override
 	public IForumSplitter create() {
