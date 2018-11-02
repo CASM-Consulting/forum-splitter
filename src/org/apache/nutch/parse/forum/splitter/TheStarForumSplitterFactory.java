@@ -15,17 +15,17 @@ import org.apache.nutch.splitter.utils.Utils;
 * Forum splitter designed to scrape articles from the IrinNews site
 * @author jp242
 */
-public class APNewsForumSplitterFactory implements IForumSplitterFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(APNewsForumSplitterFactory.class);
+public class TheStarForumSplitterFactory implements IForumSplitterFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(TheStarForumSplitterFactory.class);
 	
-	public static final String DOMAIN = "apnews.com";
+	public static final String DOMAIN = "africaintelligence.com";
 
-	private final String BODY_NAME = "Body";
-	private final String CONTENT = "Article";
+	private final String BODY_NAME = "pane-page-content";
+	private final String CONTENT = "pane-content";
 
 	@Override
 	public IForumSplitter create() {
-		return new APNewsForumSplitter();
+		return new TheStarForumSplitter();
 	}
 
 	@Override
@@ -38,9 +38,9 @@ public class APNewsForumSplitterFactory implements IForumSplitterFactory {
 		return false;
 	}
 	
-	public class APNewsForumSplitter extends AbstractForumSplitter {
+	public class TheStarForumSplitter extends AbstractForumSplitter {
 
-		public APNewsForumSplitter() {
+		public TheStarForumSplitter() {
 			super(BODY_NAME, CONTENT);
 		}
 

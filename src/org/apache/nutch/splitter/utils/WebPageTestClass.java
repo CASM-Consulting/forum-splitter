@@ -9,14 +9,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 
+//apache commons imports
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.parse.forum.splitter.AFPForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.APNewsForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.APorgForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.AfricaNewsForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.BusinessDailyAfricaForumSplitterFactory;
+import org.apache.nutch.parse.forum.splitter.CrisisGroupForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.HRWForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.IrinNewsSplitterFactory;
+import org.apache.nutch.parse.forum.splitter.MonitorForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NationCoKeForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NewTimeForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NewVisionForumSplitterFactory;
@@ -88,7 +91,7 @@ public class WebPageTestClass {
 	public static void main(String[] args) {
 		
 //		System.out.println(LocalDate.now().atStartOfDay().toString());
-		String page = "http://www.rfi.fr/afrique/20181007-rechauffement-climatique-urgence-action-jean-jouzel";
+		String page = "http://www.rfi.fr/afrique/20181101-gabon-bavardages-sante-president-bongo-arabie-saoudite";
 		WebPageTestClass.run(page);
 		
 	}

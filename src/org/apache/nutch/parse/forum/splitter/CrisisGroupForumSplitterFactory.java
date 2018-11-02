@@ -20,8 +20,8 @@ public class CrisisGroupForumSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String DOMAIN = "crisisgroup.org";
 
-	private final String BODY_NAME = "s-article__main";
-	private final String CONTENT = "annotator-wrapper";
+	private final String BODY_NAME = "s-article";
+	private final String CONTENT = "s-article__main";
 
 	@Override
 	public IForumSplitter create() {

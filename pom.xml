@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.ac.susx.tag</groupId>
   <artifactId>nutch-forum-splitter</artifactId>
-  <version>1.5.3</version>
+  <version>1.6.2</version>
   <parent>
        <groupId>uk.ac.susx.tag</groupId>
        <artifactId>tag-dist</artifactId>
@@ -107,7 +107,7 @@
 
 
 
-	<dependency>
+<dependency>
 		<groupId>org.apache.hadoop</groupId>
 		<artifactId>hadoop-core</artifactId>
 		<version>1.2.1</version>

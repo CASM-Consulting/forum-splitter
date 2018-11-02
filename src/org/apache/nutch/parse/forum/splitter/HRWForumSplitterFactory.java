@@ -21,7 +21,7 @@ public class HRWForumSplitterFactory implements IForumSplitterFactory {
 	public static final String DOMAIN = "hrw.org";
 
 	private final String BODY_NAME = "article-content";
-	private final String CONTENT = "article-body";
+	private final String CONTENT = "report-body";
 
 	@Override
 	public IForumSplitter create() {

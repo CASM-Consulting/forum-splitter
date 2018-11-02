@@ -17,8 +17,8 @@ public class NewsBitesForumSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String DOMAIN = "newsbitesfinance.com";
 	
-	private static final String BODY_NAME = "main";
-	private static final String CONTENT = "xml_body";
+	private static final String BODY_NAME = "newsbites-feed";
+	private static final String CONTENT = "wisywig";
 
 	@Override
 	public IForumSplitter create() {

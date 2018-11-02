@@ -12,6 +12,7 @@ import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.Utils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 /**
 * Forum splitter designed to scrape articles from the IrinNews site
@@ -23,6 +24,7 @@ public class RFIForumSplitterFactory implements IForumSplitterFactory {
 	public static final String DOMAIN = "rfi.fr";
 
 	private final String BODY_NAME = "article";
+//	private final String CONTENT = "article-page";
 
 	@Override
 	public IForumSplitter create() {
@@ -42,16 +44,16 @@ public class RFIForumSplitterFactory implements IForumSplitterFactory {
 	public class RFIForumSplitter implements IForumSplitter {
 
 		public void mapFields(LinkedList<Post> posts) {}
-
+		
 		@Override
 		public LinkedList<Post> split(Document doc) {
 			
 			LinkedList<Post> fThread = new LinkedList<Post>();
 			
-			Element elem = doc.getElementsByTag(BODY_NAME).first();
-			
-			fThread.add(new Post(elem.html(),elem.text()));
-			
+			Elements elem = doc.getElementsByTag(BODY_NAME);
+			if(elem.size() > 0) {
+				fThread.add(new Post(elem.first().html(),elem.first().text()));
+			}
 			return fThread;
 		}
 		
