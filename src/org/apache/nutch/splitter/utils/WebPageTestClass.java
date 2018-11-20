@@ -1,6 +1,10 @@
 package org.apache.nutch.splitter.utils;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,6 +12,7 @@ import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 //apache commons imports
 import org.apache.nutch.parse.filter.Post;
@@ -17,6 +22,7 @@ import org.apache.nutch.parse.forum.splitter.APorgForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.AfricaNewsForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.BusinessDailyAfricaForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.CrisisGroupForumSplitterFactory;
+import org.apache.nutch.parse.forum.splitter.GeneralSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.HRWForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.IrinNewsSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.MonitorForumSplitterFactory;
@@ -24,6 +30,7 @@ import org.apache.nutch.parse.forum.splitter.NationCoKeForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NewTimeForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NewVisionForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.NewsBitesForumSplitterFactory;
+import org.apache.nutch.parse.forum.splitter.PatientInfoSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.RFIForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.ReliefWebForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.ReutersForumSplitterFactory;
@@ -34,21 +41,60 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import au.com.bytecode.opencsv.CSVWriter;
+
 public class WebPageTestClass {
 	
 //	private static final String BODY_NAME = "post_block";
 //	private static final String CONTENT = "post";
+//	
+//	public static void run(String[] pages, String outputfile) {
+//		
+//		String body = "";
+//		String content = "";
+//		String domain = "";
+//
+//		try {
+//			Writer writer = Files.newBufferedWriter(Paths.get(outputfile));
+//			CSVWriter csv = new CSVWriter(writer,
+//                    CSVWriter.DEFAULT_SEPARATOR,
+//                    CSVWriter.NO_QUOTE_CHARACTER,
+//                    CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+//                    CSVWriter.DEFAULT_LINE_END); 
+//			String[] headers = new String[] {"text","url"};
+//			csv.writeNext(headers);
+//			for(String page : pages) {
+//				GeneralSplitterFactory gsf = new GeneralSplitterFactory(Utils.getDomain(page),body,content);
+//				Document doc = Jsoup.connect(page).userAgent("Mozilla").get();
+//				Post post = gsf.create().split(doc).getFirst();
+//				String[] postStr = new String[] {post.content(),page};
+//				csv.writeNext(postStr);
+//			}
+//			csv.close();
+//			
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (URISyntaxException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		
+//	}
 	
 	
 	public static void run(String page) {
 		try {
 			Document doc = Jsoup.connect(page).userAgent("Mozilla").get();
-			RFIForumSplitterFactory splitter = new RFIForumSplitterFactory();
+			PatientInfoSplitterFactory splitter = new PatientInfoSplitterFactory();
 			Post post = splitter.create().split(doc).getFirst();
 			System.out.println("Document content");
 			System.out.println(doc.text());
 			System.out.println("Post content");
 			System.out.println(post.content());
+			System.out.println(post.get(GlobalFieldValues.POST_DATE));
+			System.out.println(post.get(GlobalFieldValues.MEMBER));
 			
 //			for(Element elem : doc.getElementsByClass(BODY_NAME)) {
 //				
@@ -91,7 +137,8 @@ public class WebPageTestClass {
 	public static void main(String[] args) {
 		
 //		System.out.println(LocalDate.now().atStartOfDay().toString());
-		String page = "http://www.rfi.fr/afrique/20181101-gabon-bavardages-sante-president-bongo-arabie-saoudite";
+		String page = "https://patient.info/forums/discuss/tramadol-withdrawal-617756";
+		String output = "";
 		WebPageTestClass.run(page);
 		
 	}

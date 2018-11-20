@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.ac.susx.tag</groupId>
   <artifactId>nutch-forum-splitter</artifactId>
-  <version>1.7.0</version>
+  <version>1.7.1</version>
   <parent>
        <groupId>uk.ac.susx.tag</groupId>
        <artifactId>tag-dist</artifactId>
@@ -105,7 +105,12 @@
 </dependency>
 
 
-
+<!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+<!-- <dependency>
+    <groupId>com.opencsv</groupId>
+    <artifactId>opencsv</artifactId>
+    <version>4.3.2</version>
+</dependency> -->
 
 <dependency>
 		<groupId>org.apache.hadoop</groupId>

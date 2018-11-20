@@ -14,10 +14,10 @@ import org.jsoup.select.Elements;
 public class PatientInfoSplitterFactory implements IForumSplitterFactory {
 	
 	public static final String POST = "post";
-	public static final String CONTENT = "post-content";
+	public static final String CONTENT = "post__content";
 
-	public static final String USER = "post-username";
-	public static final String AVATAR = "avatar-hover";
+	public static final String USER = "author";
+	public static final String AVATAR = "author__name";
 	
 	private static final String FUZ = "fuzzy";
 	private static final String DTIME = "datetime";
