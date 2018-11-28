@@ -22,7 +22,6 @@ import org.apache.nutch.parse.forum.splitter.APorgForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.AfricaNewsForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.BusinessDailyAfricaForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.CrisisGroupForumSplitterFactory;
-import org.apache.nutch.parse.forum.splitter.GeneralSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.HRWForumSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.IrinNewsSplitterFactory;
 import org.apache.nutch.parse.forum.splitter.MonitorForumSplitterFactory;
