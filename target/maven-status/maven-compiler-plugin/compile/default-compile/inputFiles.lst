@@ -39,6 +39,7 @@
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/ForumFilter.java
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/index/solrwriter/SolrUtils.java
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/SplitterFactory.java
+/Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/GeneralSplitterFactory.java
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/splitter/utils/Registry.java
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/forum/splitter/APNewsForumSplitterFactory.java
 /Users/jp242/Documents/workspace/nutch-forum-splitter-plugin/src/org/apache/nutch/parse/local/LocalForumScraper.java

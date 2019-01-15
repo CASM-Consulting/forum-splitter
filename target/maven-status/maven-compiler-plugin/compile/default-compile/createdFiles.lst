@@ -4,6 +4,7 @@ org/apache/nutch/parse/forum/splitter/TheCitizenForumSplitterFactory$TheCitizenF
 org/apache/nutch/parse/forum/splitter/MPAForumSplitterFactory.class
 org/apache/nutch/parse/forum/splitter/TheStarForumSplitterFactory$TheStarForumSplitter.class
 org/apache/nutch/parse/filter/filters/AbstractPageFilter.class
+org/apache/nutch/splitter/utils/GeneralSplitterFactory.class
 org/apache/nutch/parse/filter/filters/LocationEntityFilter.class
 org/apache/nutch/parse/forum/splitter/AfricaNewsForumSplitterFactory.class
 org/apache/nutch/parse/forum/splitter/MentalHealthForumSplitterFactory$MentalHealthForumSplitter.class
@@ -24,6 +25,7 @@ org/apache/nutch/parse/filter/filters/IPageFilter.class
 org/apache/nutch/parse/forum/splitter/CrisisGroupForumSplitterFactory.class
 org/apache/nutch/parse/local/LocalForumScraper$2.class
 org/apache/nutch/parse/filter/filters/SubjectFilter.class
+org/apache/nutch/splitter/utils/GeneralSplitterFactory$GeneralSplitter.class
 org/apache/nutch/parse/forum/splitter/DepressionForumsSplitterFactory$DepressionForumSplitter.class
 org/apache/nutch/parse/forum/splitter/MentalHealthForumSplitterFactory.class
 org/apache/nutch/parse/forum/splitter/NationCoKeForumSplitterFactory$NationCoKeForumSplitter.class

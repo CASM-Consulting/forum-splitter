@@ -138,7 +138,7 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 	public static String createQuery(Map<String,String> labels) throws InvalidCSSQueryException {
 		StringBuilder sb = new StringBuilder();
 		if(labels == null || labels.size() == 0) {
-			throw new InvalidCSSQueryException(null);
+			throw new InvalidCSSQueryException(null,null);
 		}
 		
 		// If it's a custom query then simply return said query
@@ -151,7 +151,7 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 			sb.append(labels.get(TAG));
 		}
 		else {
-			throw new InvalidCSSQueryException(sb.toString());
+			throw new InvalidCSSQueryException(TAG, labels.get(TAG));
 		}
 		
 		// add the class label to the css query.
