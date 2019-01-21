@@ -41,7 +41,7 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 		this.fields = fields;
 	}
 	
-	public GeneralSplitterFactory(Map<String,List<Map<String,String>>> fields,String domain) {
+	public GeneralSplitterFactory(Map<String,List<Map<String,String>>> fields, String domain) {
 		this(fields);
 		this.domain = domain;
 	}

@@ -40,6 +40,7 @@ org/apache/nutch/parse/filter/filters/OrganisationFilter.class
 org/apache/nutch/index/solrwriter/SolrConstants.class
 org/apache/nutch/parse/filter/filters/IPostFilter.class
 org/apache/nutch/parse/filter/ForumHTMLParseFilter.class
+org/apache/nutch/parse/forum/splitter/GeneralSplitterFactory.class
 org/apache/nutch/index/solrwriter/SolrMappingReader.class
 org/apache/nutch/parse/filter/Post.class
 org/apache/nutch/parse/forum/splitter/TheCitizenForumSplitterFactory.class
@@ -47,6 +48,7 @@ org/apache/nutch/parse/forum/splitter/DepressionForumsSplitterFactory.class
 org/apache/nutch/parse/forum/splitter/ReutersForumSplitterFactory$ReutersForumSplitter.class
 org/apache/nutch/parse/filter/filters/PageStartFilter.class
 org/apache/nutch/splitter/utils/GlobalFieldValues.class
+org/apache/nutch/parse/forum/splitter/GeneralSplitterFactory$GeneralSplitter.class
 org/apache/nutch/parse/forum/splitter/AbstractForumSplitter.class
 org/apache/nutch/parse/forum/splitter/HRWForumSplitterFactory$HRWForumSplitter.class
 org/apache/nutch/splitter/utils/SplitterFactory.class
@@ -72,6 +74,7 @@ org/apache/nutch/parse/forum/splitter/APNewsForumSplitterFactory$APNewsForumSpli
 org/apache/nutch/parse/forum/splitter/SurvivingAntiDepressantsSplitterFactory.class
 org/apache/nutch/parse/forum/splitter/SurvivingAntiDepressantsSplitterFactory$SurvivingAntiDepressantsSplitter.class
 org/apache/nutch/parse/forum/splitter/TheEastAfricanForumSplitterFactory.class
+org/apache/nutch/splitter/utils/InvalidCSSQueryException.class
 org/apache/nutch/index/solrwriter/SolrUtils.class
 org/apache/nutch/parse/forum/splitter/PatientInfoSplitterFactory$PatientInfoSplitter.class
 org/apache/nutch/parse/forum/splitter/AfricaNewsForumSplitterFactory$AfricaNewsForumSplitter.class
