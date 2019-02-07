@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>uk.ac.susx.tag</groupId>
   <artifactId>nutch-forum-splitter</artifactId>
-  <version>1.7.1</version>
+  <version>1.7.2</version>
   <parent>
        <groupId>uk.ac.susx.tag</groupId>
        <artifactId>tag-dist</artifactId>

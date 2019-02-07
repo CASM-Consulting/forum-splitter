@@ -96,7 +96,11 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 			
 			LinkedList<Post> posts = new LinkedList<>();
 			List<String> queries = new ArrayList<>();
-			for(Map<String,String> query : fields.get(ROOT)) {
+			List<Map<String,String>> queryList = fields.get(fields.keySet().stream()
+					.filter(field -> field.endsWith("/" + ROOT))
+					.collect(Collectors.toList())
+					.get(0));
+			for(Map<String,String> query : queryList) {
 				try {
 					queries.add(createQuery(query));
 				} catch (InvalidCSSQueryException e) {
@@ -106,7 +110,7 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 			for(Element element : getContent(doc, new ArrayList<Element>(), queries)) {
 				posts.add(new Post(element.html(),element.text()));
 			}
-			
+			this.mapFields(posts);
 			return posts;
 		}
 				
