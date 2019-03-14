@@ -22,7 +22,7 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GeneralSplitterFactory implements IForumSplitterFactory {
+public class GeneralSplitterFactory {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(GeneralSplitterFactory.class);
 	
@@ -36,6 +36,8 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 	public static final String TAG = "tag";
 	public static final String CLASS = "class";
 	public static final String ATT = "att";
+	
+	public GeneralSplitterFactory() {}
 
 	public GeneralSplitterFactory(Map<String,List<Map<String,String>>> fields) {
 		this.fields = fields;
@@ -46,12 +48,12 @@ public class GeneralSplitterFactory implements IForumSplitterFactory {
 		this.domain = domain;
 	}
 
-	@Override
+//	@Override
 	public IForumSplitter create() {
 		return new GeneralSplitter();
 	}
 
-	@Override
+//	@Override
 	public boolean correctDomain(String url) {
 		try {
 			return (domain != null) ? Utils.getDomain(url).equals(domain) : true;

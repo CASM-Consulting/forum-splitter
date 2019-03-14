@@ -52,6 +52,7 @@ public class LocalForumScraper {
 		
 		this.inputDir = new File(ip.localDir());
 		this.domain = ip.domain();
+		System.out.println(this.domain);
 		this.output = ip.output();
 		this.headers = ip.headers().toArray(new String[ip.headers().size()]);
 	}

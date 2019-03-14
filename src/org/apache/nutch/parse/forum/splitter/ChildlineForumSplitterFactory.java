@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.GlobalFieldValues;
@@ -89,18 +90,19 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 					LOG.error("Failed to parse the date in current format");
 				}
 				
-				// Retain whether the post is quoting and replying to another persons response to the topic
-				Elements quoted = doc.getElementsByClass(QUOTE);
-				if(quoted.size() > 0 && Integer.valueOf(post.get(GlobalFieldValues.POSITION).get(0)) > 0) {
-					final String[] quotedInfo = getQuotedInfo(quoted.get(0)); // complete this info
-					post.put(GlobalFieldValues.QUOTE_MEM, quotedInfo[0].trim());
-					try {
-						Date date = sdf.parse(quotedInfo[1].trim());
-						post.put(GlobalFieldValues.QUOTE_DATE, sdf2.format(date));	
-					} catch (ParseException e) {
-						LOG.error("Failed to parse the date in current format");
-					}
-				}
+//				// Retain whether the post is quoting and replying to another persons response to the topic
+//				Elements quoted = doc.getElementsByClass(QUOTE);
+////				LOG.error(quoted.text());
+//				if(quoted.size() > 0 && Integer.valueOf(post.get(GlobalFieldValues.POSITION).get(0)) > 0) {
+//					final String[] quotedInfo = getQuotedInfo(quoted.get(0)); // complete this info
+//					post.put(GlobalFieldValues.QUOTE_MEM, quotedInfo[0].trim());
+//					try {
+//						Date date = sdf.parse(quotedInfo[1].trim());
+//						post.put(GlobalFieldValues.QUOTE_DATE, sdf2.format(date));	
+//					} catch (ParseException e) {
+//						LOG.error("Failed to parse quoted date in current format: " + quotedInfo[1]);
+//					}
+//				}
 			}
 		}
 
@@ -130,12 +132,12 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			// Retrieve the starting thread position (i.e. is this a pagination from the original thread)
 			int page = Integer.valueOf(doc.getElementsByClass(PAGINATION).get(0).text().split("\\s")[1]).intValue();
 			if(page <= 1) {
-				final Elements text = topic.getElementsByTag(CD_DATA);
+				final Element text = topic.getElementsByClass(POST_CONTENT).first();
 				final StringBuilder post_text = new StringBuilder();
-				for(Element element : text) {
-					post_text.append(element.text()).append(" ");
-				}
-				final Post newPost = new Post(topic.html(),post_text.toString());
+//				for(Element element : text) {
+					post_text.append(text.text()).append(" ");
+//				}
+				final Post newPost = new Post(text.html(),post_text.toString());
 				newPost.put(GlobalFieldValues.ID, thread_ID);
 				newPost.put(GlobalFieldValues.POST_ID, thread_ID);
 				newPost.put(GlobalFieldValues.THREAD_ID, thread_ID);
@@ -148,14 +150,22 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			
 //			// check it is not an empty post (there seem to be instances...) and add meta-data
 			for(Element post : replies) {
-				final Elements reply_content = post.getElementsByClass(POST_CONTENT).first().getElementsByClass(POST_CONTENT_INNER);
-				System.out.println(reply_content.size());
+				final List<Element> reply_content = post.getElementsByClass(POST_CONTENT).first().getElementsByClass(POST_CONTENT_INNER)
+						.stream()
+						.filter(el -> !(el.select("blockquote").size()>0))
+						.collect(Collectors.toList());;
+//				List<Element> removeQuotes = reply_content.stream()
+//					.filter(el -> !(el.getElementsByTag("blockquote").size()>0))
+//					.collect(Collectors.toList());
+//				System.out.println(reply_content.size());
 
 				if(reply_content.size() > 0) {
-					final Elements text = reply_content.first().getElementsByTag(CD_DATA);
+//					final Elements text = reply_content.first().getElementsByTag(CD_DATA);
 					final StringBuilder post_text = new StringBuilder();
-					for(Element element : text) {
-						post_text.append(element.text()).append(" ");
+					for(Element element : reply_content) {
+//						if(!(element.getElementsByTag("blockquote").size() > 0)) {
+							post_text.append(element.text()).append(" ");
+//						}
 					}
 //					System.out.println(post_text.toString());
 					// Get the post identifying meta-data
@@ -185,7 +195,7 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 	}
 	
 	public static void main(String[] args) {
-		String testpage = "/Volumes/DataDrive/jackpay-data-folders/Documents/Projects/NSPCC/test-page/test-page-1.html";
+		String testpage = "/Users/jp242/Documents/Projects/NSPCC/test-page.html";
 		ChildlineForumSplitterFactory cfsf = new ChildlineForumSplitterFactory();
 		ChildlineForumSplitter csf = cfsf.create();
 		try {
@@ -193,12 +203,12 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			LinkedList<Post> posts = csf.split(doc);
 			csf.mapFields(posts);
 			for(Post post: posts) {
-				for (String meta : post.keySet()) {
-					if(!meta.equals("posthtml")){
-						System.out.println(meta  + " " + post.get(meta).get(0));
-					}
-				}
-				System.out.println();
+//				for (String meta : post.keySet()) {
+//					if(!meta.equals("posthtml")){
+						System.out.println(post.get(GlobalFieldValues.CONTENT).get(0));
+//					}
+//				}
+//				System.out.println();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
