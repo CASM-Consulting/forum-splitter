@@ -15,6 +15,7 @@ import java.io.IOException;
 // java imports
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -124,7 +125,22 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			Element subjectElem = doc.getElementsByTag("title").first();
 			final String subject = subjectElem.text().split("\\|")[0].trim();
 			
-
+			// Get breadcrumb
+			boolean topFound = false;
+			Elements bread = doc.select("div.breadcrumb__inner");
+			System.out.println(bread.size());
+			Elements links = bread.get(0).select("a");
+			System.out.println(links.size());
+			List<String> cats = new ArrayList<>();
+			for(Element elem : links) {
+				cats.add(elem.text());
+			}
+			if(bread.get(0).select("span.breadcrumb__inner__current").size() > 0) {
+				cats.add(bread.get(0).select("span.breadcrumb__inner__current").get(0).text());
+			}
+			List<String> subCats = cats.subList(cats.indexOf("Message boards"), cats.size());
+			
+			System.out.println(subCats.size());
 			
 			// Retrieve the full replies body
 			Elements replies = doc.getElementsByClass(BODY_NAME);
@@ -134,15 +150,25 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			if(page <= 1) {
 				final Element text = topic.getElementsByClass(POST_CONTENT).first();
 				final StringBuilder post_text = new StringBuilder();
-//				for(Element element : text) {
-					post_text.append(text.text()).append(" ");
-//				}
+//				System.out.println(text.children().get(0).children());
+				for(Element element : text.children().get(0).children()) {
+					if(!(element.tagName().equals("span")) && !(element.tagName().equals("blockquote"))) {
+						post_text.append(element.text()).append(" ");
+					}
+				}
 				final Post newPost = new Post(text.html(),post_text.toString());
 				newPost.put(GlobalFieldValues.ID, thread_ID);
 				newPost.put(GlobalFieldValues.POST_ID, thread_ID);
 				newPost.put(GlobalFieldValues.THREAD_ID, thread_ID);
 				newPost.put(GlobalFieldValues.POSITION, String.valueOf(0));
 				newPost.put(GlobalFieldValues.SUBJECT, subject);
+//				newPost.put("url")
+				
+				// Put the category hierarchy
+				for(int i = 0; i < subCats.size(); i++) {
+					newPost.put("category-" + i, subCats.get(i));
+				}
+				
 				fThread.add(newPost);
 			}
 			
@@ -150,22 +176,25 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			
 //			// check it is not an empty post (there seem to be instances...) and add meta-data
 			for(Element post : replies) {
-				final List<Element> reply_content = post.getElementsByClass(POST_CONTENT).first().getElementsByClass(POST_CONTENT_INNER)
-						.stream()
-						.filter(el -> !(el.select("blockquote").size()>0))
-						.collect(Collectors.toList());;
+				Elements reply_content = post.getElementsByClass(POST_CONTENT).first().getElementsByClass(POST_CONTENT_INNER);
+//						.stream()
+//						.filter(el -> !(el.select("blockquote").size()>0))
+//						.collect(Collectors.toList());
 //				List<Element> removeQuotes = reply_content.stream()
 //					.filter(el -> !(el.getElementsByTag("blockquote").size()>0))
 //					.collect(Collectors.toList());
 //				System.out.println(reply_content.size());
+//				System.out.println(reply_content.first().getAllElements());
 
 				if(reply_content.size() > 0) {
 //					final Elements text = reply_content.first().getElementsByTag(CD_DATA);
 					final StringBuilder post_text = new StringBuilder();
-					for(Element element : reply_content) {
-//						if(!(element.getElementsByTag("blockquote").size() > 0)) {
+					for(Element element : reply_content.first().children()) {
+						if(!(element.tagName().equals("span")) && !(element.tagName().equals("blockquote")) && !(element.tagName().equals(POST_CONTENT_INNER))) {
+//							System.out.println(element.tagName());
+//							System.out.println(element.text());
 							post_text.append(element.text()).append(" ");
-//						}
+						}
 					}
 //					System.out.println(post_text.toString());
 					// Get the post identifying meta-data
@@ -175,6 +204,12 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 					newPost.put(GlobalFieldValues.THREAD_ID, thread_ID);
 					newPost.put(GlobalFieldValues.POSITION, String.valueOf(page));
 					newPost.put(GlobalFieldValues.SUBJECT, subject);
+					
+					// Put the category hierarchy
+					for(int i = 0; i < subCats.size(); i++) {
+						newPost.put("category-" + i, subCats.get(i));
+					}
+					
 					fThread.add(newPost);
 					page++;
 				}
@@ -203,12 +238,12 @@ public class ChildlineForumSplitterFactory implements IForumSplitterFactory {
 			LinkedList<Post> posts = csf.split(doc);
 			csf.mapFields(posts);
 			for(Post post: posts) {
-//				for (String meta : post.keySet()) {
-//					if(!meta.equals("posthtml")){
-						System.out.println(post.get(GlobalFieldValues.CONTENT).get(0));
-//					}
-//				}
-//				System.out.println();
+				for (String meta : post.keySet()) {
+					if(!meta.equals("posthtml")){
+						System.out.println(meta + " " + post.get(meta).get(0));
+					}
+				}
+				System.out.println();
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

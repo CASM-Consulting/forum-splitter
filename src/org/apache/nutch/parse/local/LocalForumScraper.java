@@ -109,7 +109,9 @@ public class LocalForumScraper {
 			for(Post post : posts) {
 				String[] row = new String[headers.length];
 				for(int i = 0; i < row.length; i++) {
-					row[i] = post.get(headers[i]).get(0);
+					if(post.get(headers[i]) != null && post.get(headers[i]).size() > 0) {
+						row[i] = post.get(headers[i]).get(0);
+					}
 				}
 				writer.writeNext(row);
 			}

@@ -1,24 +1,39 @@
 package org.apache.nutch.parse.forum.splitter;
 
 // java imports
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Path;
+import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 // nutch imports
+import com.google.common.io.Files;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import org.apache.commons.io.FileUtils;
+import org.apache.hadoop.fs.FileUtil;
+import org.apache.hadoop.util.StringUtils;
+import org.apache.maven.wagon.PathUtils;
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.InvalidCSSQueryException;
+import org.apache.nutch.splitter.utils.POJOHTMLMatcherDefinition;
 import org.apache.nutch.splitter.utils.Utils;
 
 // jsoup imports
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 // logging imports
+import org.jsoup.parser.Tag;
+import org.jsoup.select.Elements;
+import org.mortbay.util.IO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +42,7 @@ public class GeneralSplitterFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(GeneralSplitterFactory.class);
 	
 	private static String domain;
-	
+
 	public final String ROOT = "root";
 
 	private Map<String,List<Map<String,String>>> fields;
@@ -62,6 +77,16 @@ public class GeneralSplitterFactory {
 		}
 		return true;
 	}
+
+	/**
+	 * A method that assumes that this is
+	 * @param json
+	 * @return
+	 */
+	public static List<POJOHTMLMatcherDefinition> parseJsonTagSet(String json) throws IOException {
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.readValue(json, new TypeReference<List<POJOHTMLMatcherDefinition>>(){});
+	}
 	
 	public class GeneralSplitter implements IForumSplitter {
 
@@ -71,26 +96,24 @@ public class GeneralSplitterFactory {
 		public void mapFields(LinkedList<Post> posts) {
 			
 			if(fields.size() > 1) {
-				for(String field : fields.keySet()) {
+				for (String field : fields.keySet()) {
 					List<String> queries = new ArrayList<>();
-					for(Map<String,String> query : fields.get(field)) {
+					for (Map<String, String> query : fields.get(field)) {
 						try {
 							queries.add(createQuery(query));
 						} catch (InvalidCSSQueryException e) {
 							LOG.error(e.getMessage());
 						}
 					}
-					for(Post post : posts) {
-						List<String> meta = getContent(Jsoup.parse(post.postHTML()),new ArrayList<>(),queries).stream()
+					for (Post post : posts) {
+						List<String> meta = getContent(Jsoup.parse(post.postHTML()), new ArrayList<>(), queries).stream()
 								.map(elem -> elem.text())
 								.collect(Collectors.toList());
-						
 						post.put(field, meta);
 					}
 
 				}
 			}
-			
 		}
 
 		@Override
@@ -102,6 +125,7 @@ public class GeneralSplitterFactory {
 					.filter(field -> field.endsWith("/" + ROOT))
 					.collect(Collectors.toList())
 					.get(0));
+
 			for(Map<String,String> query : queryList) {
 				try {
 					queries.add(createQuery(query));
@@ -109,14 +133,21 @@ public class GeneralSplitterFactory {
 					LOG.error(e.getMessage());
 				}
 			}
-			for(Element element : getContent(doc, new ArrayList<Element>(), queries)) {
+
+			for(Element element : getContent(doc, new ArrayList<>(), queries)) {
 				posts.add(new Post(element.html(),element.text()));
 			}
+
 			this.mapFields(posts);
 			return posts;
 		}
 				
 	}
+
+	private static boolean isAttributeRequest(String query) {
+		return (Pattern.matches(".*\\[.*\\].*",query) && !Pattern.matches(".*\\[.*=.*\\].*",query));
+	}
+
 
 	/**
 	 * @return List of elements which contain the content for a specific requested part of a web-page.
@@ -124,7 +155,21 @@ public class GeneralSplitterFactory {
 	public static List<Element> getContent(Element currElem, List<Element> output, List<String> queries) {
 		
 		if(queries.size() == 1) {
-			output.addAll(currElem.select(queries.get(0)));
+			String query = queries.get(0);
+			Elements elems = currElem.select(query);
+			if(isAttributeRequest(query)) {
+				String attr = query.substring(query.indexOf("[")+1,query.indexOf("]"));
+				LOG.error("QUERY: " + query);
+				List<Element> attributes = elems.stream()
+						.filter(el -> el.hasAttr(attr))
+						.map(el -> el.attr(attr))
+						.map(str -> new Element(Tag.valueOf(attr),attr).text(str))
+						.collect(Collectors.toList());
+				output.addAll(attributes);
+			}
+			else {
+				output.addAll(currElem.select(queries.get(0)));
+			}
 		}
 		else {
 			for(Element newElem : currElem.select(queries.get(0))) {
@@ -133,6 +178,20 @@ public class GeneralSplitterFactory {
 		}
 		
 		return output;
+	}
+
+
+	public static List<List<POJOHTMLMatcherDefinition>> getDirectoryOfJsonTagSets(Path directory) throws IOException {
+		Collection<File> scrapers = FileUtils.listFiles(directory.toFile(), new String[]{"json"}, true);
+		List<List<POJOHTMLMatcherDefinition>> scraperDefs = new ArrayList<>();
+		for(File scraper : scrapers) {
+			scraperDefs.add(getTagSetFromJson(scraper.toPath()));
+		}
+		return scraperDefs;
+	}
+
+	public static List<POJOHTMLMatcherDefinition> getTagSetFromJson(Path jsonLocation) throws IOException {
+		return parseJsonTagSet(FileUtils.readFileToString(jsonLocation.toFile()));
 	}
 	
 	/**
@@ -167,8 +226,31 @@ public class GeneralSplitterFactory {
 		if(labels.containsKey(ATT)) {
 			sb.append("[").append(labels.get(ATT)).append("]");
 		}
-		
 		return sb.toString();
+
+	}
+
+	public static void main(String[] args) {
+		String url = "https://www.bbc.co.uk/news/business-49124375";
+		try {
+			Document htmlDoc = Jsoup.connect(url).userAgent("Mozilla").get();
+//			System.out.println(htmlDoc.html());
+			Map<String,String> rule = new HashMap<>();
+			rule.put(TAG,"div");
+			rule.put(CLASS,"date");
+			rule.put(ATT,"data-datetime=26 July 2019");
+			String r = createQuery(rule);
+			List<Element> output = new ArrayList<>();
+			List<Element> els = getContent(htmlDoc,output,new ArrayList<String>(){{add(r);}});
+			System.out.println(els.size());
+			for(Element el : els) {
+				System.out.println(el.text());
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InvalidCSSQueryException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
