@@ -69,6 +69,11 @@
     			<groupId>org.reflections</groupId>
     			<artifactId>reflections</artifactId>
     		</exclusion>
+            <exclusion>
+                <groupId>org.apache.tika</groupId>
+                <artifactId>tika-core</artifactId>
+            </exclusion>
+
     	</exclusions>
 	</dependency>
 	
