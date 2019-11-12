@@ -10,14 +10,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 // nutch imports
-import com.google.common.io.Files;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import org.apache.commons.io.FileUtils;
-import org.apache.hadoop.fs.FileUtil;
-import org.apache.hadoop.util.StringUtils;
-import org.apache.maven.wagon.PathUtils;
 import org.apache.nutch.parse.filter.Post;
 import org.apache.nutch.splitter.utils.InvalidCSSQueryException;
 import org.apache.nutch.splitter.utils.POJOHTMLMatcherDefinition;
