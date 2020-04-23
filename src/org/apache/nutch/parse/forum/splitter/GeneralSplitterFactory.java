@@ -133,10 +133,9 @@ import sun.rmi.runtime.Log;
 		 * @return
 		 */
 		private void excludeElements(Document doc, List<String> exclusionQueries) {
-
-			exclusionQueries.stream()
-					.map(doc::select)
-					.forEach(elements -> elements.remove());
+			for(String query : exclusionQueries) {
+				doc.select(query).remove();
+			}
 		}
 
 		@Override
