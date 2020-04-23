@@ -4,6 +4,7 @@ package org.apache.nutch.parse.forum.splitter;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 // nutch imports
+import com.google.common.io.Files;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.io.FileUtils;
 import org.apache.nutch.parse.filter.Post;
@@ -24,6 +26,7 @@ import org.codehaus.jackson.type.TypeReference;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.parser.Tag;
 import org.jsoup.select.Elements;
 
@@ -111,14 +114,22 @@ import sun.rmi.runtime.Log;
 					for (Post post : posts) {
 						// parse the html to a dom model
 						Document doc = Jsoup.parse(post.postHTML());
+
 						// remove all excluded elements from the tree
 						excludeElements(doc,exclusionQueries);
 						// get all text content from remainder of document
 						List<Element> out = getContent(doc, new ArrayList<>(), queries);
-						List<String> meta = out.stream()
+						List<String> meta = new ArrayList<>();
+
+						StringBuilder sb = new StringBuilder();
+						out.stream()
+								// necessary (and efficient) queries in order to capture only that text which hasn't been excluded
 								.flatMap(elem -> elem.select("*").stream())
-								.map(elem -> elem.ownText())
-								.collect(Collectors.toList());
+								.flatMap(elem -> elem.textNodes().stream())
+								.map(node -> node.text())
+								.forEach(txt -> sb.append(" ").append(txt));
+
+						meta.add(sb.toString());
 						post.put(field, meta);
 					}
 
