@@ -116,7 +116,8 @@ import sun.rmi.runtime.Log;
 						// get all text content from remainder of document
 						List<Element> out = getContent(doc, new ArrayList<>(), queries);
 						List<String> meta = out.stream()
-								.map(elem -> elem.text())
+								.flatMap(elem -> elem.select("*").stream())
+								.map(elem -> elem.ownText())
 								.collect(Collectors.toList());
 						post.put(field, meta);
 					}
@@ -193,10 +194,6 @@ import sun.rmi.runtime.Log;
 				output.addAll(attributes);
 			}
 			else {
-				LOG.info("Elems size produce:" + elems.size());
-				if(elems.size() == 1) {
-					LOG.info("text = " + elems.first().text());
-				}
 				output.addAll(elems);
 			}
 		}
