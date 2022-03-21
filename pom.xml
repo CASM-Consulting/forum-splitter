@@ -62,7 +62,7 @@
 	<dependency>
     	<groupId>org.apache.nutch</groupId>
     	<artifactId>nutch</artifactId>
-    	<version>1.11</version>
+    	<version>1.18</version>
     	<scope>compile</scope>
     	<exclusions>
     		<exclusion>
